@@ -13,6 +13,8 @@ public class Visualiser : IDisposable
     private Canvas.Canvas _canvas;
     private Thread _thread;
     
+    public float TimeStep { get; set; } = 0.01f;
+    
     private SynchronizationContext _syncContext;
     
     private bool _running = true;
@@ -48,13 +50,13 @@ public class Visualiser : IDisposable
         {
             while (_running)
             {
-                Gravity.SimulateGravity(_bodies, 0.01f);
+                Gravity.SimulateGravity(_bodies, TimeStep);
                 
                 Array.ForEach(_orbits, orbit => orbit.Offset = new Point(_canvas.Width / 2, _canvas.Height / 2));
                 
                 for (int i = 0; i < _bodies.Length; i++)
                 {
-                    _bodies[i].Position += _bodies[i].Velocity;
+                    _bodies[i].Position += _bodies[i].Velocity * TimeStep;
                     _orbits[i].Points.Add(new Point((int)(_bodies[i].Position.X), (int)(_bodies[i].Position.Y)));
                     
                     if (_orbits[i].Points.Count > 200)

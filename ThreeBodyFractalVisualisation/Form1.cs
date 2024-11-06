@@ -14,12 +14,12 @@ public partial class Form1 : Form
         InitializeComponent();
     }
     
-    public void Form1_Load(object sender, EventArgs e)
+    private void Form1_Load(object sender, EventArgs e)
     {
-        pictureBox1.Image = Fractal.GetFractal(ThreeBodySimulator.GenerateStableConfiguration(), 800, 800, 10f, center: _center, zoom: _zoom);
+        pictureBox1.Image = Fractal.GetFractal(ThreeBodySimulator.GenerateStableConfiguration(), 800, 800, 20f, center: _center, zoom: _zoom);
     }
     
-    public void Form1_Click(object sender, MouseEventArgs e)
+    private void Form1_Click(object sender, MouseEventArgs e)
     {
         Console.WriteLine($"{e.X}, {e.Y}");
         _center += new Vector2((e.X - 400)/_zoom + _center.X, (e.Y - 400)/_zoom + _center.Y/2);

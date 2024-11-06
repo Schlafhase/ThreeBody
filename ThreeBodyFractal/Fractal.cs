@@ -33,10 +33,7 @@ public static class Fractal
                 ThreeBodySimulator.Simulate(config, time, 0.01f);
                 lock (bmpLocker)
                 {
-                    bmp.SetPixel(x, y, Color.FromArgb(
-                        Math.Clamp((int)(Vector2.Distance(config[0].Position, start[0].Position) * 0.6), 0, 255),
-                        Math.Clamp((int)(Vector2.Distance(config[1].Position, start[1].Position) * 0.6), 0, 255),
-                        Math.Clamp((int)(Vector2.Distance(config[2].Position, start[2].Position) * 0.6), 0, 255)));
+                    bmp.SetPixel(x, y, GetColorFromAngle(start, config));
                 }
             }
         });
@@ -47,5 +44,21 @@ public static class Fractal
         // }
 
         return bmp;
+    }
+    
+    private static Color GetColorFromDistance(PhysicsBody[] a, PhysicsBody[] b)
+    {
+        return Color.FromArgb(
+            Math.Clamp((int)(Vector2.Distance(a[0].Position, b[0].Position) * 0.6), 0, 255),
+            Math.Clamp((int)(Vector2.Distance(a[1].Position, b[1].Position) * 0.6), 0, 255),
+            Math.Clamp((int)(Vector2.Distance(a[2].Position, b[2].Position) * 0.6), 0, 255));
+    }
+    
+    private static Color GetColorFromAngle(PhysicsBody[] a, PhysicsBody[] b)
+    {
+        return Color.FromArgb(
+            Math.Clamp((int)(Math.Atan2(b[0].Position.Y, b[0].Position.X) * 40.58), 0, 255),
+            Math.Clamp((int)(Math.Atan2(b[1].Position.Y, b[1].Position.X) * 40.58), 0, 255),
+            Math.Clamp((int)(Math.Atan2(b[2].Position.Y, b[2].Position.X) * 40.58), 0, 255));
     }
 }
