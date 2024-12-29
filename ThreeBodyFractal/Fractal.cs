@@ -17,23 +17,23 @@ public static class Fractal
             {
                 PhysicsBody[] config = startConfig.ToArray();
 
-                float fractX = (x - width / 2) / zoom + center.X;
-                float fractY = (y - height / 2) / zoom + center.Y;
+                float fractalX = (x - width / 2) / zoom + center.X;
+                float fractalY = (y - height / 2) / zoom + center.Y;
 
                 if (x == 400 && y == 400)
                 {
-                    Console.WriteLine($"{fractX}, {fractY}");
+                    Console.WriteLine($"{fractalX}, {fractalY}");
                 }
 
-                config[0].Position += new Vector2(fractX, fractY);
-                config[1].Position += new Vector2(-fractX, fractY);
+                config[0].Position += new Vector2(fractalX, fractalY);
+                config[1].Position += new Vector2(-fractalX, fractalY);
 
                 PhysicsBody[] start = config.ToArray();
 
-                ThreeBodySimulator.Simulate(config, time, 0.01f);
+                ThreeBodySimulator.Simulate(config, time, 0.05f);
                 lock (bmpLocker)
                 {
-                    bmp.SetPixel(x, y, GetColorFromAngle(start, config));
+                    bmp.SetPixel(x, y, GetColorFromDistance(start, config));
                 }
             }
         });
@@ -49,9 +49,9 @@ public static class Fractal
     private static Color GetColorFromDistance(PhysicsBody[] a, PhysicsBody[] b)
     {
         return Color.FromArgb(
-            Math.Clamp((int)(Vector2.Distance(a[0].Position, b[0].Position) * 0.6), 0, 255),
-            Math.Clamp((int)(Vector2.Distance(a[1].Position, b[1].Position) * 0.6), 0, 255),
-            Math.Clamp((int)(Vector2.Distance(a[2].Position, b[2].Position) * 0.6), 0, 255));
+            Math.Clamp((int)(Vector2.Distance(a[0].Position, b[0].Position) * 0.3), 0, 255),
+            Math.Clamp((int)(Vector2.Distance(a[1].Position, b[1].Position) * 0.3), 0, 255),
+            Math.Clamp((int)(Vector2.Distance(a[2].Position, b[2].Position) * 0.3), 0, 255));
     }
     
     private static Color GetColorFromAngle(PhysicsBody[] a, PhysicsBody[] b)

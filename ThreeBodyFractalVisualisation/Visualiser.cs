@@ -13,6 +13,7 @@ public class Visualiser : IDisposable
     private BezierCurve[] _orbits;
     private Canvas.Canvas _canvas;
     private readonly Thread _thread;
+    private float _timeSinceStart = 0f;
     
     public float TimeStep { get; set; } = 0.01f;
     
@@ -20,7 +21,7 @@ public class Visualiser : IDisposable
     
     private bool _running = true;
     
-    public Visualiser(Action? update = null, Canvas.Canvas? canvas = null)
+    public Visualiser(Action? update = null, Canvas.Canvas? canvas = null, float runTime = -1f)
     {
         _syncContext = SynchronizationContext.Current;
         _bodies = ThreeBodySimulator.GenerateStableConfiguration(0);
@@ -52,6 +53,12 @@ public class Visualiser : IDisposable
             while (_running)
             {
                 Gravity.SimulateGravity(_bodies, TimeStep);
+                _timeSinceStart += TimeStep;
+                
+                if (runTime >= 0 && _timeSinceStart >= runTime)
+                {
+                    break;
+                }
                 
                 Array.ForEach(_orbits, orbit =>
                 {
@@ -78,7 +85,7 @@ public class Visualiser : IDisposable
                 {
                     for (int i = 0; i < _bodies.Length; i++)
                     {
-                        int _i = i; // Copy `i` because `i` might have changed by the time the lambda is executed
+                        int _i = i; // Copy i because i might have changed by the time the lambda is executed
                         _syncContext.Post(_ => bodyComponents[_i].X = (int)(_bodies[_i].Position.X + _canvas.Width / 2), null);
                         _syncContext.Post(_ => bodyComponents[_i].Y = (int)(_bodies[_i].Position.Y + _canvas.Height / 2), null);
                     }

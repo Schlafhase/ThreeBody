@@ -59,7 +59,7 @@ public class ThreeBodySimulator
                 for (int i = 0; i < velocities.Length; i++)
                 {
                     float angle = (float)Math.Atan2(positions[i].Y, positions[i].X) + (float)Math.PI / 2f;
-                    velocities[i] = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * 5;
+                    velocities[i] = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * 15;
                 }
 
                 return new PhysicsBody[]

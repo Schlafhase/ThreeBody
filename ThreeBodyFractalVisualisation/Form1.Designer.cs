@@ -50,6 +50,8 @@ partial class Form1
 		Name = "Form1";
 		Text = "Form1";
 		Load += new EventHandler(Form1_Load);
+		FormClosing += Form1_FormClosing;
+		((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
 		pictureBox1.MouseDown += new MouseEventHandler(Form1_Click);
 		((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
 		ResumeLayout(false);
