@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreeBody", "ThreeBody\ThreeBody.csproj", "{FDA833D2-453E-42FC-9CC0-2A0A127E97AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreeBodyVisualisationOl", "ThreeBodyVisualisationOl\ThreeBodyVisualisationOl.csproj", "{ADF249D8-CF18-46A3-8A48-5F76CFEA870F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreeBodyFractal", "ThreeBodyFractal\ThreeBodyFractal.csproj", "{473E9A16-D567-4673-AF71-D0A9F43FC418}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreeBodyFractalVisualisationOld", "ThreeBodyFractalVisualisationOld\ThreeBodyFractalVisualisationOld.csproj", "{374E8C23-790D-4915-9ACB-1C680FEBC233}"
@@ -22,10 +20,6 @@ Global
 		{FDA833D2-453E-42FC-9CC0-2A0A127E97AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDA833D2-453E-42FC-9CC0-2A0A127E97AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDA833D2-453E-42FC-9CC0-2A0A127E97AA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ADF249D8-CF18-46A3-8A48-5F76CFEA870F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ADF249D8-CF18-46A3-8A48-5F76CFEA870F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ADF249D8-CF18-46A3-8A48-5F76CFEA870F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ADF249D8-CF18-46A3-8A48-5F76CFEA870F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{473E9A16-D567-4673-AF71-D0A9F43FC418}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{473E9A16-D567-4673-AF71-D0A9F43FC418}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{473E9A16-D567-4673-AF71-D0A9F43FC418}.Release|Any CPU.ActiveCfg = Release|Any CPU
