@@ -5,7 +5,7 @@ using Canvas.Components.Interfaces;
 using ThreeBody;
 using ThreeBody.Physics;
 
-namespace ThreeBodyVisualisation;
+namespace ThreeBodyVisualisationOl;
 
 public class Visualiser : IDisposable
 {

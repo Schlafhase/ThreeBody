@@ -1,4 +1,4 @@
-﻿namespace ThreeBodyVisualisation;
+﻿namespace ThreeBodyVisualisationOl;
 
 partial class Form1
 {

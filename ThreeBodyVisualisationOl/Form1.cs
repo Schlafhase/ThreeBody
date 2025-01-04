@@ -2,7 +2,7 @@
 using System.Numerics;
 using ThreeBody;
 
-namespace ThreeBodyVisualisation;
+namespace ThreeBodyVisualisationOl;
 
 public partial class Form1 : Form
 {

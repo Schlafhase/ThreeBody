@@ -1,4 +1,4 @@
-namespace ThreeBodyVisualisation;
+namespace ThreeBodyVisualisationOl;
 
 internal static class Program
 {

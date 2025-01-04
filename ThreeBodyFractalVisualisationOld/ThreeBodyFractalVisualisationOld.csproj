@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWindowsForms>true</UseWindowsForms>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>ThreeBodyFractalVisualisation</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ThreeBodyFractal\ThreeBodyFractal.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="ThreeBodyForm.cs">
+        <SubType>Form</SubType>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Canvas">
+        <HintPath>..\..\Canvas\Canvas\bin\Release\net6.0\Canvas.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>
