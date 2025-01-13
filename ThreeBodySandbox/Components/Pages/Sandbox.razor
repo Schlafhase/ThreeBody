@@ -1,0 +1,139 @@
+﻿@page "/Sandbox"
+@rendermode InteractiveServer
+
+<div id="content">
+    <BitmapImage
+        Width="80vmin"
+        Height="80vmin"
+        Image="_bitmapImage"
+        Hidden="_imageHidden"
+        @ref="_imageComponent">
+    </BitmapImage>
+    <div id="inputs">
+        <form id="general-settings" @onsubmit="render">
+            <h3>Allgemein</h3>
+            <div class="input-line">
+                <label for="width">Breite:</label>
+                <input id="width" type="number" min="1" step="1" @bind="_width"/>
+            </div>
+            <div class="input-line">
+                <label for="height">Höhe:</label>
+                <input id="height" type="number" @bind="_height"/>
+            </div>
+            <div class="input-line">
+                <label for="time">Zeitschritte:</label>
+                <input id="time" type="number" step="any" @bind="_time"/>
+            </div>
+            <div class="input-line">
+                <label for="dt">Zeitschrittweite:</label>
+                <input id="dt" type="number" step="any" @bind="_timeStep"/>
+            </div>
+
+            <input style="float: left" type="submit" value="Berechnen"/>
+        </form>
+        <form id="config-settings">
+            <h3>Konfiguration</h3>
+
+            @for (int i = 0; i < 3; i++)
+            {
+                int _i = i;
+
+                <b>Körper @i</b>
+                <div>
+                    <div class="input-line">
+                        <label for="m-@i">Masse:</label>
+                        <input id="m-@i" type="number" step="any" @bind="@_bodies[_i].Mass"/>
+                    </div>
+
+                    <div class="separator"></div>
+
+                    <div class="input-line">
+                        <label for="x-@i">x:</label>
+                        <input id="x-@i" type="number" step="any" @bind="_positions[_i].x" @bind:after="updateBodies"/>
+                    </div>
+
+                    <div class="input-line">
+                        <label for="y-@i">y:</label>
+                        <input id="y-@i" type="number" step="any" @bind="_positions[_i].y" @bind:after="updateBodies"/>
+                    </div>
+
+                    <div class="separator"></div>
+
+                    <div class="input-line">
+                        <label for="vx-@i">Vx:</label>
+                        <input id="vx-@i" type="number" step="any" @bind="_velocities[_i].x" @bind:after="updateBodies"/>
+                    </div>
+
+                    <div class="input-line">
+                        <label for="vy-@i">Vy:</label>
+                        <input id="vy-@i" type="number" step="any" @bind="_velocities[_i].y" @bind:after="updateBodies"/>
+                    </div>
+                </div>
+            }
+        </form>
+    </div>
+</div>
+
+<style>
+
+    .separator {
+        width: calc(100% - 0.5em);
+        border-top: 1px solid black;
+        margin: 1em 0 0.5em 0;
+        opacity: 0.5;
+    }
+
+    #content {
+        display: flex;
+    }
+
+    #general-settings {
+        grid-area: general-settings;
+    }
+
+    #config-settings {
+        grid-area: config-settings;
+    }
+
+    @@media (orientation: landscape) {
+        #content {
+            flex-direction: row;
+        }
+
+        #inputs {
+            display: grid;
+            grid-auto-columns: 1fr 1fr;
+
+            grid-template-areas:
+            "general-settings config-settings";
+        }
+    }
+
+    @@media (orientation: portrait) {
+        #content {
+            flex-direction: column;
+        }
+
+        form {
+            margin-bottom: 3.5em !important;
+        }
+    }
+
+
+    #inputs form, #inputs .input-line {
+        margin: 0.5em;
+    }
+
+    /*h3, b {*/
+    /*    margin: 0.5em;*/
+    /*}*/
+
+    input {
+        float: right;
+        width: 50%;
+    }
+
+    #inputs div {
+        width: 90%;
+    }
+</style>

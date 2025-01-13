@@ -1,22 +1,45 @@
-﻿using Canvas.Components.Interfaces;
+﻿using System.Numerics;
+using Canvas.Components.Interfaces;
 using SlidePresenter;
-using ThreeBodyVisualisation;
-using Rectangle = Canvas.Components.Rectangle;
+using ThreeBody;
+using ThreeBodyFractalVisualisation;
 
 namespace Presentation.Slides;
 
 public sealed class Slide2 : Slide
 {
-	public Slide2(RelativePositionedComponent<ThreeBodyVisualiser> threeBodyVisualiserComponent)
+	public Slide2()
 	{
 		Canvas = new Canvas.Canvas(0, 0,
 		[
-			threeBodyVisualiserComponent,
-			new RelativePositionedComponent<Rectangle>(new Rectangle(0, 0, 100, 100, Color.Blue))
+			new RelativePositionedComponent<ThreeBodyFractalVisualiser>(new ThreeBodyFractalVisualiser(800, 800)
+			{
+				SimulationTime = 20f,
+				StartConfig =
+				[
+					new PhysicsBody()
+					{
+						Mass = 100,
+						Position = new Vector2(0, 100),
+						Velocity = new Vector2(15, 0),
+					},
+					new PhysicsBody()
+					{
+						Mass = 100,
+						Position = new Vector2(0, -100),
+						Velocity = new Vector2(-7, 7),
+					},
+					new PhysicsBody()
+					{
+						Mass = 100,
+						Position = new Vector2(0, 0),
+						Velocity = new Vector2(-8, -8),
+					}
+				]
+			})
 			{
 				X = 0.5f,
 				Y = 0.5f,
-				Margin = 10,
 				Centered = true
 			}
 		]);

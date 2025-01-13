@@ -65,7 +65,7 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 		TimeStep = timeStep;
 		StepsPerSecond = stepsPerSecond;
 		
-		_bodies = ThreeBodySimulator.GenerateStableConfiguration();
+		_bodies = ThreeBodySimulator.GenerateStableConfiguration(1);
 
 		_bodyComponents =
 		[

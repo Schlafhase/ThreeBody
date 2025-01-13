@@ -1,6 +1,9 @@
+using System.Numerics;
+using System.Security.Cryptography;
 using Canvas.Components.Interfaces;
 using Presentation.Slides;
 using SlidePresenter;
+using ThreeBody;
 using ThreeBodyVisualisation;
 
 namespace Presentation;
@@ -15,6 +18,28 @@ internal static class Program
 	private static void Main()
 	{
 		ThreeBodyVisualiser threeBodyVisualiser = new();
+		PhysicsBody[] config =
+		[
+			new PhysicsBody()
+			{
+				Mass = 100,
+				Position = new Vector2(0, 100),
+				Velocity = new Vector2(15, 0),
+			},
+			new PhysicsBody()
+			{
+				Mass = 100,
+				Position = new Vector2(0, -100),
+				Velocity = new Vector2(-7, 7),
+			},
+			new PhysicsBody()
+			{
+				Mass = 100,
+				Position = new Vector2(0, 0),
+				Velocity = new Vector2(-8, -8),
+			}
+		];
+		threeBodyVisualiser.SetConfig(config);
 
 		RelativePositionedComponent<ThreeBodyVisualiser> threeBodyVisualiserComponent =
 			new RelativePositionedComponent<ThreeBodyVisualiser>(threeBodyVisualiser)
@@ -27,7 +52,7 @@ internal static class Program
 		List<Slide> slides =
 		[
 			new Slide1(),
-			new Slide2(threeBodyVisualiserComponent),
+			new Slide2(),
 			new Slide3(threeBodyVisualiser, threeBodyVisualiserComponent)
 		];
 

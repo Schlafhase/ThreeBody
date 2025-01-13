@@ -8,7 +8,7 @@ public partial class Form1 : Form
 {
 	private const float _zoom = 1f;
 	private Vector2 _center = new(0, 0);
-	private List<ThreeBodyForm> _openForms = [];
+	private readonly List<ThreeBodyForm> _openForms = [];
 
 	public Form1()
 	{
@@ -17,7 +17,7 @@ public partial class Form1 : Form
 
 	private void Form1_Load(object sender, EventArgs e)
 	{
-		pictureBox1.Image = Fractal.GetFractal(ThreeBodySimulator.GenerateStableConfiguration(), 800, 800, 20f,
+		pictureBox1.Image = Fractal.GetFractal(FractalType.Distance, ThreeBodySimulator.GenerateStableConfiguration(), 800, 800, 20f,
 											   center: _center, zoom: _zoom);
 	}
 

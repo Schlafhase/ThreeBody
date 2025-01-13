@@ -3,7 +3,7 @@ using ThreeBody.Physics;
 
 namespace ThreeBody;
 
-public class ThreeBodySimulator
+public static class ThreeBodySimulator
 {
     public static void Simulate(PhysicsBody[] bodies, float time, float timeStep)
     {
@@ -45,7 +45,7 @@ public class ThreeBodySimulator
     {
         switch (version)
         {
-            case 0:
+            case 0 or 1:
             {
                 Vector2[] positions = new Vector2[3];
                 Vector2[] velocities = new Vector2[3];
@@ -59,39 +59,15 @@ public class ThreeBodySimulator
                 for (int i = 0; i < velocities.Length; i++)
                 {
                     float angle = (float)Math.Atan2(positions[i].Y, positions[i].X) + (float)Math.PI / 2f;
-                    velocities[i] = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * 15;
+                    velocities[i] = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * (version == 0 ? MathF.PI * 10 : 15);
                 }
 
-                return new PhysicsBody[]
-                {
+                return
+                [
                     new PhysicsBody { Position = positions[0], Velocity = velocities[0], Mass = 100 },
                     new PhysicsBody { Position = positions[1], Velocity = velocities[1], Mass = 100 },
                     new PhysicsBody { Position = positions[2], Velocity = velocities[2], Mass = 100 }
-                };
-            }
-
-            case 1:
-            {
-                Vector2[] positions = new Vector2[3]
-                {
-                    new Vector2(0, 0),
-                    new Vector2(-100, 0),
-                    new Vector2(100, 0)
-                };
-                
-                Vector2[] velocities = new Vector2[3]
-                {
-                    new Vector2(-10, -10),
-                    new Vector2(10, 10),
-                    new Vector2(10, 10)
-                };
-                
-                return new PhysicsBody[]
-                {
-                    new PhysicsBody { Position = positions[0], Velocity = velocities[0], Mass = 500 },
-                    new PhysicsBody { Position = positions[1], Velocity = velocities[1], Mass = 500 },
-                    new PhysicsBody { Position = positions[2], Velocity = velocities[2], Mass = 500 }
-                };
+                ];
             }
         }
         throw new ArgumentException("Invalid version.", nameof(version));

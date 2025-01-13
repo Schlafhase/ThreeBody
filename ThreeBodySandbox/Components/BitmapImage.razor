@@ -1,0 +1,13 @@
+﻿<div style="width: @Width ;
+            height: @Height ;
+            background-color: #cecece">
+    
+    <img src="@_imageBase64"
+         alt="@Alt"
+         style="width: @Width ;
+                height: @Height ;
+                object-fit: contain;
+                position: absolute;
+                opacity: @(Hidden ? 0 : 1)"/>
+    <p style="font-size: 2em; text-align: center; margin: calc(50% - 1em) 0;">Wird geladen</p>
+</div>
