@@ -14,22 +14,27 @@
             <h3>Allgemein</h3>
             <div class="input-line">
                 <label for="width">Breite:</label>
-                <input id="width" type="number" min="1" step="1" @bind="_width"/>
+                <input class="form-control" id="width" type="number" min="1" step="1" @bind="_width"/>
             </div>
             <div class="input-line">
                 <label for="height">Höhe:</label>
-                <input id="height" type="number" @bind="_height"/>
+                <input class="form-control" id="height" type="number" @bind="_height"/>
             </div>
             <div class="input-line">
                 <label for="time">Zeitschritte:</label>
-                <input id="time" type="number" step="any" @bind="_time"/>
+                <input class="form-control" id="time" type="number" step="any" @bind="_time"/>
             </div>
             <div class="input-line">
                 <label for="dt">Zeitschrittweite:</label>
-                <input id="dt" type="number" step="any" @bind="_timeStep"/>
+                <input class="form-control" id="dt" type="number" step="any" @bind="_timeStep"/>
             </div>
-
-            <input style="float: left" type="submit" value="Berechnen"/>
+            <div class="input-line">
+                <label for="zoom">Zoom:</label>
+                <input class="form-control" id="zoom" type="number" step="any" @bind="_zoom"/>
+            </div>
+            <div class="input-line">
+                <input class="form-control btn btn-primary" style="float: left; width: 100%" type="submit" value="Berechnen"/>
+            </div>
         </form>
         <form id="config-settings">
             <h3>Konfiguration</h3>
@@ -42,31 +47,33 @@
                 <div>
                     <div class="input-line">
                         <label for="m-@i">Masse:</label>
-                        <input id="m-@i" type="number" step="any" @bind="@_bodies[_i].Mass"/>
+                        <input class="form-control" id="m-@i" type="number" step="any" @bind="@_bodies[_i].Mass"/>
                     </div>
 
                     <div class="separator"></div>
 
                     <div class="input-line">
                         <label for="x-@i">x:</label>
-                        <input id="x-@i" type="number" step="any" @bind="_positions[_i].x" @bind:after="updateBodies"/>
+                        <input class="form-control" id="x-@i" type="number" step="any" @bind="_positions[_i].x" @bind:after="updateBodies"/>
                     </div>
 
                     <div class="input-line">
                         <label for="y-@i">y:</label>
-                        <input id="y-@i" type="number" step="any" @bind="_positions[_i].y" @bind:after="updateBodies"/>
+                        <input class="form-control" id="y-@i" type="number" step="any" @bind="_positions[_i].y" @bind:after="updateBodies"/>
                     </div>
 
                     <div class="separator"></div>
 
                     <div class="input-line">
                         <label for="vx-@i">Vx:</label>
-                        <input id="vx-@i" type="number" step="any" @bind="_velocities[_i].x" @bind:after="updateBodies"/>
+                        <input class="form-control" id="vx-@i" type="number" step="any" @bind="_velocities[_i].x"
+                               @bind:after="updateBodies"/>
                     </div>
 
                     <div class="input-line">
                         <label for="vy-@i">Vy:</label>
-                        <input id="vy-@i" type="number" step="any" @bind="_velocities[_i].y" @bind:after="updateBodies"/>
+                        <input class="form-control" id="vy-@i" type="number" step="any" @bind="_velocities[_i].y"
+                               @bind:after="updateBodies"/>
                     </div>
                 </div>
             }
@@ -95,7 +102,7 @@
         grid-area: config-settings;
     }
 
-    @@media (orientation: landscape) {
+    @@media (min-width: 105rem) {
         #content {
             flex-direction: row;
         }
@@ -109,7 +116,7 @@
         }
     }
 
-    @@media (orientation: portrait) {
+    @@media (max-width: 105rem) {
         #content {
             flex-direction: column;
         }
@@ -128,9 +135,14 @@
     /*    margin: 0.5em;*/
     /*}*/
 
-    input {
+    input[type="number"] {
         float: right;
-        width: 50%;
+        width: 50% !important;
+        height: 2.5rem;
+    }
+    
+    .input-line {
+        height: 2.2rem;
     }
 
     #inputs div {

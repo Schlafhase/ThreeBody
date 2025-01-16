@@ -1,13 +1,35 @@
-﻿<div style="width: @Width ;
-            height: @Height ;
-            background-color: #cecece">
-    
+﻿<div class="bitmap-image" style="width: @Width ;
+height: @Height ;
+background-color: #cecece">
+
     <img src="@_imageBase64"
          alt="@Alt"
-         style="width: @Width ;
-                height: @Height ;
-                object-fit: contain;
-                position: absolute;
-                opacity: @(Hidden ? 0 : 1)"/>
+         style="
+             width: @Width ;
+         height: @Height ;
+         object-fit: contain;
+         position: absolute;
+         opacity: @(Hidden ? 0 : 1)"/>
+    <canvas onclick="@onClickHandler"
+            id="c-@_id"
+            style="
+                opacity: 0;
+                width: @Width;
+            height: @Height;
+            position:absolute;
+            z-index: 999;"></canvas>
     <p style="font-size: 2em; text-align: center; margin: calc(50% - 1em) 0;">Wird geladen</p>
 </div>
+
+<script>
+    window.size = (id) => {
+        const canvas = document.getElementById('c-' + id);
+        const rect = canvas.getBoundingClientRect();
+        return {
+            X: rect.x,
+            Y: rect.y,
+            Width: rect.width,
+            Height: rect.height
+        };
+    }
+</script>

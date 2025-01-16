@@ -29,7 +29,7 @@ public class Visualiser : IDisposable
         PositionedComponent[] bodyComponents =
         [
             new GlowDot(0, 0, 10, 80, Color.Red),
-            new GlowDot(0, 0, 10, 80, Color.Yellow),
+            new GlowDot(0, 0, 10, 80, Color.Lime),
             new GlowDot(0, 0, 10, 80, Color.Blue),
         ];
 

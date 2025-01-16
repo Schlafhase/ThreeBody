@@ -1,0 +1,18 @@
+﻿@page "/Simulation"
+@using ThreeBodySandbox.Components.Layout
+@layout EmptyLayout
+@rendermode InteractiveServer
+
+<BitmapImage
+    Image="@_image"
+    Width="100vmin"
+    Height="100vmin"
+    Hidden="@(!_loaded)"></BitmapImage>
+    
+<style>
+    .bitmap-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+</style>

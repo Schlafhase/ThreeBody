@@ -1,12 +1,15 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
-using System.Net.Mime;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 
 namespace ThreeBodySandbox.Components;
 
 public partial class BitmapImage : ComponentBase
 {
+	[Inject]
+	private IJSRuntime _jsRuntime { get; set; }
 	[Parameter]
 	public Image? Image { get; set; }
 	[Parameter] 
@@ -18,7 +21,27 @@ public partial class BitmapImage : ComponentBase
 	[Parameter]
 	public bool Hidden { get; set; }
 	
+	private Guid _id = Guid.NewGuid();
+	
+	public ValueTask<ImageSize> Size => _jsRuntime.InvokeAsync<ImageSize>("size", _id);
+
+	public struct ImageSize
+	{
+		public float X { get; init; }
+		public float Y { get; init; }
+		public float Width { get; init; }
+		public float Height { get; set; }
+	}
+	
 	private string _imageBase64 = "";
+
+	public event Func<double, double, Task> OnClick;
+	
+	private async Task onClickHandler(MouseEventArgs e)
+	{
+		ImageSize size = await Size;
+		OnClick?.Invoke(e.ClientX - size.X, e.ClientY - size.Y);
+	}
 	
 	protected override async Task OnParametersSetAsync()
 	{

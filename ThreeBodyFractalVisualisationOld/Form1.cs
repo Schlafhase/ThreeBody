@@ -6,7 +6,7 @@ namespace ThreeBodyFractalVisualisation;
 
 public partial class Form1 : Form
 {
-	private const float _zoom = 1f;
+	private const float _zoom = 0.8f;
 	private Vector2 _center = new(0, 0);
 	private readonly List<ThreeBodyForm> _openForms = [];
 
@@ -17,8 +17,9 @@ public partial class Form1 : Form
 
 	private void Form1_Load(object sender, EventArgs e)
 	{
-		pictureBox1.Image = Fractal.GetFractal(FractalType.Distance, ThreeBodySimulator.GenerateStableConfiguration(), 800, 800, 20f,
-											   center: _center, zoom: _zoom);
+		pictureBox1.Image = Fractal.GetFractalIterations(ThreeBodySimulator.GenerateStableConfiguration(), 800, 800,
+														 10000, 1000, 0.01f,
+														 center: _center, zoom: _zoom, true);
 	}
 
 	private void Form1_Click(object sender, MouseEventArgs e)

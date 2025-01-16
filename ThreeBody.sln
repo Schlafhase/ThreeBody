@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreeBodyFractalVisualisati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreeBodySandbox", "ThreeBodySandbox\ThreeBodySandbox.csproj", "{254BDF9E-69B5-4A4D-B4D4-B652D19916DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreeBodyConsole", "ThreeBodyConsole\ThreeBodyConsole.csproj", "{A2C7F120-B2B3-44A1-B460-66A203BBB891}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{254BDF9E-69B5-4A4D-B4D4-B652D19916DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{254BDF9E-69B5-4A4D-B4D4-B652D19916DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{254BDF9E-69B5-4A4D-B4D4-B652D19916DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2C7F120-B2B3-44A1-B460-66A203BBB891}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2C7F120-B2B3-44A1-B460-66A203BBB891}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2C7F120-B2B3-44A1-B460-66A203BBB891}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2C7F120-B2B3-44A1-B460-66A203BBB891}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
