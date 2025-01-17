@@ -33,10 +33,9 @@ public partial class Simulation : ComponentBase
 				Encoding.UTF8.GetString(
 					Convert.FromBase64String(startConfigBase64)));
 
-			startConfig = ThreeBodySimulator.GenerateStableConfiguration();
 			startConfig[0].Position += new Vector2(x, y);
 
-			_image = ThreeBodySimulator.GetSimulationImage(startConfig, 1000, 1000, time, timeStep, true);
+			_image = ThreeBodySimulator.GetSimulationImage(startConfig, 1000, 1000, time, timeStep, true, true);
 			_loaded = true;
 			await InvokeAsync(StateHasChanged);
 		}
