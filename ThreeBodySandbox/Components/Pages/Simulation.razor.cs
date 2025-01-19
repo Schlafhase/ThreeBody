@@ -4,6 +4,7 @@ using System.Numerics;
 using System.Text;
 using Newtonsoft.Json;
 using ThreeBody;
+using ThreeBodySandbox.Languages;
 
 namespace ThreeBodySandbox.Components.Pages;
 
@@ -20,7 +21,10 @@ public partial class Simulation : ComponentBase
 
 	[SupplyParameterFromQuery(Name = "startConfig")]
 	private string startConfigBase64 { get; set; }
+	[SupplyParameterFromQuery(Name = "lang")]
+	private string languageCode { get; set; }
 
+	private Language _language = new German();
 	
 	private Bitmap? _image;
 	private bool _loaded;
@@ -29,6 +33,12 @@ public partial class Simulation : ComponentBase
 	{
 		if (firstRender)
 		{
+			_language = languageCode switch
+			{
+				"en" => new English(),
+				_    => new German()
+			};
+			
 			PhysicsBody[] startConfig = JsonConvert.DeserializeObject<PhysicsBody[]>(
 				Encoding.UTF8.GetString(
 					Convert.FromBase64String(startConfigBase64)));

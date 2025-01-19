@@ -1,4 +1,5 @@
 using ThreeBodySandbox.Components;
+using ThreeBodySandbox.Languages;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,7 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
 	   .AddInteractiveServerComponents();
 
+// builder.Services.AddSingleton<Language>(_ => new German());
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

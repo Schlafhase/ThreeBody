@@ -10,9 +10,20 @@ internal class Program
 {
 	public static void Main(string[] args)
 	{
-		Console.Write("Welches Fraktal möchten Sie berechnen? (1: Distanz 2: Radius) ");
-		bool distance = Console.ReadKey().Key == ConsoleKey.D1;
-		Console.WriteLine();
+		int fractalType = int.MinValue;
+
+		while (fractalType is < 1 or > 3)
+		{
+			if (fractalType != int.MinValue)
+			{
+				Console.BackgroundColor = ConsoleColor.Red;
+				Console.ForegroundColor = ConsoleColor.Black;
+				Console.WriteLine("Ungültige Eingabe.");
+				Console.ResetColor();
+			}
+
+			readInt("Fraktaltyp (1: Distanz, 2: Radius, 3: Chaos)", out fractalType);
+		}
 
 		readInt("Breite", out int width);
 		readInt("Höhe", out int height);
@@ -53,13 +64,22 @@ internal class Program
 
 		string fileName;
 
-		if (distance)
+		if (fractalType == 1)
 		{
 			readFloat("Zeit", out float time);
 
 			using Bitmap bmp = Fractal.GetFractal(FractalType.Distance, bodies, width, height, time, timeStep,
 												  new Vector2(centerX, centerY), zoom, true);
 			fileName = "fractal-distance.png";
+			bmp.Save(fileName);
+		}
+		else if (fractalType == 3)
+		{
+			readFloat("Zeit", out float time);
+
+			using Bitmap bmp = Fractal.GetFractalChaos(bodies, width, height, time, timeStep,
+													   new Vector2(centerX, centerY), zoom, true);
+			fileName = "fractal-chaos.png";
 			bmp.Save(fileName);
 		}
 		else
@@ -87,6 +107,7 @@ internal class Program
 				}
 			}.Start();
 		}
+
 		Console.WriteLine();
 
 		Console.WriteLine("Drücken Sie eine beliebige Taste, um das Programm zu beenden.");

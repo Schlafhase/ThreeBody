@@ -101,6 +101,77 @@ public static class Fractal
         return bmp;
     }
 
+    public static Bitmap GetFractalChaos(PhysicsBody[] startConfig, int width, int height, float time, float timeStep, Vector2 center, float zoom, bool logProgress = false)
+    {
+        object bmpLocker = new();
+        object consoleLocker = new();
+        Bitmap bmp = new(width, height);
+        float factor = 8 / time;
+
+        DateTime start = DateTime.UtcNow;
+        int column = 0;
+        
+        Parallel.For(0, width, x =>
+        {
+            Parallel.For(0, height, y =>
+            {
+                PhysicsBody[] config = startConfig.ToArray();
+
+                float fractalX = (x - width / 2f) / zoom + center.X;
+                float fractalY = (y - height / 2f) / zoom + center.Y;
+
+                config[0].Position += new Vector2(fractalX, fractalY);
+
+                PhysicsBody[] start = config.ToArray();
+
+                ThreeBodySimulator.Simulate(config, time, timeStep, out int directionChanges);
+
+                lock (bmpLocker)
+                {
+                    // Color colour = lerpColours(palette, directionChanges / (time/6));
+                    float brightness = Math.Clamp(directionChanges / (time / 600), 0, 255);
+                    bmp.SetPixel(x, y, Color.FromArgb((int)brightness, (int)brightness, (int)brightness));
+                }
+            });
+            
+            if (!logProgress)
+            {
+                return;
+            }
+
+            lock (consoleLocker)
+            {
+                if (column == 0)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine();
+                }
+
+                column++;
+                Console.SetCursorPosition(0, Console.CursorTop - 2);
+                
+                Console.BackgroundColor = ConsoleColor.Green;
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(string.Join("", Enumerable.Repeat("#", (int)(column / (float)width * 50))));
+                
+                Console.BackgroundColor = ConsoleColor.Gray;
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine(string.Join("", Enumerable.Repeat(".", 50 - (int)(column / (float)width * 50))));
+                
+                Console.ResetColor();
+                Console.WriteLine($"Vergangene Zeit: {DateTime.UtcNow - start}");
+                Console.Write($"ETA: {(DateTime.UtcNow - start) / (column + 1) * (width - column)}");
+            }
+        });
+        
+        // for (int x = 0; x < width; x++)
+        // {
+        //     
+        // }
+
+        return bmp;
+    }
+    
     private static Color lerpColours(Color[] palette, float t)
     {
         if (palette == null || palette.Length == 0)
@@ -160,7 +231,7 @@ public static class Fractal
 
                 PhysicsBody[] start = config.ToArray();
 
-                ThreeBodySimulator.Simulate(config, time, timeStep);
+                ThreeBodySimulator.Simulate(config, time, timeStep, out _);
 
                 lock (bmpLocker)
                 {

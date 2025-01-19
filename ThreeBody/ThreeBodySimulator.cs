@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Numerics;
+using System.Security.Cryptography;
 using Canvas.Components;
 using ThreeBody.Physics;
 
@@ -10,11 +11,16 @@ public static class ThreeBodySimulator
 	public static void Simulate(PhysicsBody[] bodies,
 		float time,
 		float timeStep,
+		out int directionChanges,
 		(BezierCurve orbit1, BezierCurve orbit2, BezierCurve orbit3)? orbits = null,
 		int orbitOffsetX = 0,
 		int orbitOffsetY = 0)
 	{
 		#region Validation
+
+		int sign(float value) => value > 0 ? 1 : -1;
+		
+		directionChanges = 0;
 
 		if (timeStep <= 0)
 		{
@@ -40,12 +46,18 @@ public static class ThreeBodySimulator
 
 		for (int i = 0; i < steps; i++)
 		{
+			Vector2 previousVelocity = bodies[0].Velocity;
+
 			Gravity.SimulateGravity(bodies, timeStep);
+
+			if (sign(previousVelocity.Y) != sign(bodies[0].Velocity.Y))
+			{
+				directionChanges++;
+			}
 
 			for (int j = 0; j < bodies.Length; j++)
 			{
 				bodies[j].Position += bodies[j].Velocity * timeStep;
-
 			}
 
 			if (orbits is not { } orbitsNotNull || i % 10 == 0)
@@ -160,7 +172,7 @@ public static class ThreeBodySimulator
 			orbit2.Pen = Pens.Lime;
 			orbit3.Pen = Pens.Blue;
 
-			Simulate(startConfig, time, timeStep, (orbit1, orbit2, orbit3), width / 2, height / 2);
+			Simulate(startConfig, time, timeStep, out _, (orbit1, orbit2, orbit3), width / 2, height / 2);
 
 			orbit1.Put(g);
 			orbit2.Put(g);
@@ -168,7 +180,7 @@ public static class ThreeBodySimulator
 		}
 		else
 		{
-			Simulate(startConfig, time, timeStep);
+			Simulate(startConfig, time, timeStep, out _);
 		}
 
 		GlowDot body1End = new((int)startConfig[0].Position.X + width / 2, (int)startConfig[0].Position.Y + height / 2,

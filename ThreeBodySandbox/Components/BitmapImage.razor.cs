@@ -3,6 +3,7 @@ using System.Drawing.Imaging;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+using ThreeBodySandbox.Languages;
 
 namespace ThreeBodySandbox.Components;
 
@@ -20,6 +21,8 @@ public partial class BitmapImage : ComponentBase
 	public string Height { get; set; }
 	[Parameter]
 	public bool Hidden { get; set; }
+	[Parameter]
+	public Language Language { get; set; } = new German();
 	
 	private Guid _id = Guid.NewGuid();
 	
