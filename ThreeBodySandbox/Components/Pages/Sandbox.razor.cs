@@ -27,8 +27,8 @@ public partial class Sandbox : ComponentBase
 	private float _time = 20f;
 	private float _timeStep = 0.1f;
 	private float _zoom = 1f;
-	private float _centerX = 0;
-	private float _centerY = 0;
+	private float _centerX;
+	private float _centerY;
 	private readonly PhysicsBody[] _bodies = ThreeBodySimulator.GenerateStableConfiguration();
 
 	private (float x, float y)[] _positions = new (float x, float y)[3];
@@ -38,6 +38,7 @@ public partial class Sandbox : ComponentBase
 
 	public Sandbox()
 	{
+		_centerY = 0;
 		_positions[0].x = _bodies[0].Position.X;
 		_positions[0].y = _bodies[0].Position.Y;
 
@@ -77,7 +78,7 @@ public partial class Sandbox : ComponentBase
 		_currentThread = new Thread(async () =>
 		{
 			_bitmapImage = Fractal.GetFractal(FractalType.Distance, _bodies,
-											  _width, _height, _time, _timeStep, new Vector2(0, 0), _zoom);
+											  _width, _height, _time, _timeStep, new Vector2(_centerX, _centerY), _zoom);
 
 			// _bitmapImage = Fractal.GetFractalIterations(_bodies, _width, _height, 100, 101, _timeStep, new Vector2(0, 0), _zoom);
 

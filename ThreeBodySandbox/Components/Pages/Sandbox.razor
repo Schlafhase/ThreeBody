@@ -35,7 +35,16 @@
                 <input class="form-control" id="zoom" type="number" step="any" @bind="_zoom"/>
             </div>
             <div class="input-line">
-                <input class="form-control btn btn-primary" style="float: left; width: 100%" type="submit" value="@_language.SandBoxRender"/>
+                <label for="center-x">@_language.SandBoxCenterX</label>
+                <input class="form-control" id="center-x" type="number" step="any" @bind="_centerX"/>
+            </div>
+            <div class="input-line">
+                <label for="center-y">@_language.SandBoxCenterY</label>
+                <input class="form-control" id="center-y" type="number" step="any" @bind="_centerY"/>
+            </div>
+            <div class="input-line">
+                <input class="form-control btn btn-primary" style="float: left; width: 100%" type="submit"
+                       value="@_language.SandBoxRender"/>
             </div>
         </form>
         <form id="config-settings">
@@ -56,12 +65,14 @@
 
                     <div class="input-line">
                         <label for="x-@i">@_language.SandBoxConfigPositionX</label>
-                        <input class="form-control" id="x-@i" type="number" step="any" @bind="_positions[_i].x" @bind:after="updateBodies"/>
+                        <input class="form-control" id="x-@i" type="number" step="any" @bind="_positions[_i].x"
+                               @bind:after="updateBodies"/>
                     </div>
 
                     <div class="input-line">
                         <label for="y-@i">@_language.SandBoxConfigPositionY</label>
-                        <input class="form-control" id="y-@i" type="number" step="any" @bind="_positions[_i].y" @bind:after="updateBodies"/>
+                        <input class="form-control" id="y-@i" type="number" step="any" @bind="_positions[_i].y"
+                               @bind:after="updateBodies"/>
                     </div>
 
                     <div class="separator"></div>
@@ -143,7 +154,7 @@
         width: 40% !important;
         height: 2.5rem;
     }
-    
+
     .input-line {
         height: 2.2rem;
     }
