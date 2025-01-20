@@ -39,6 +39,8 @@ public partial class Simulation : ComponentBase
 				_    => new German()
 			};
 			
+			await InvokeAsync(StateHasChanged);
+			
 			PhysicsBody[] startConfig = JsonConvert.DeserializeObject<PhysicsBody[]>(
 				Encoding.UTF8.GetString(
 					Convert.FromBase64String(startConfigBase64)));
