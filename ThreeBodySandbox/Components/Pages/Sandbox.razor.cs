@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Numerics;
+using System.Runtime.Versioning;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
@@ -9,6 +10,7 @@ using ThreeBodySandbox.Languages;
 
 namespace ThreeBodySandbox.Components.Pages;
 
+[SupportedOSPlatform("windows")]
 public partial class Sandbox : ComponentBase
 {
 	[SupplyParameterFromQuery(Name = "lang")]
@@ -93,11 +95,7 @@ public partial class Sandbox : ComponentBase
 	{
 		if (firstRender)
 		{
-			_language = _languageCode switch
-			{
-				"en" => new English(),
-				_    => new German()
-			};
+			_language = Language.GetLanguage(_languageCode);
 			
 			_imageComponent.OnClick += async (x, y) =>
 			{

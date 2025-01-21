@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
+using System.Runtime.Versioning;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
@@ -7,6 +8,7 @@ using ThreeBodySandbox.Languages;
 
 namespace ThreeBodySandbox.Components;
 
+[SupportedOSPlatform("windows")]
 public partial class BitmapImage : ComponentBase
 {
 	[Inject]

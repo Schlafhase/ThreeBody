@@ -3,9 +3,11 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Numerics;
+using System.Runtime.Versioning;
 using ThreeBody;
 using ThreeBodyFractal;
 
+[SupportedOSPlatform("windows")]
 internal class Program
 {
 	public static void Main(string[] args)

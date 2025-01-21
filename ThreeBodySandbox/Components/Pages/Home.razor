@@ -1,7 +1,102 @@
 ﻿@page "/"
+@using System.Runtime.Versioning
+@using ThreeBodySandbox.Languages
+@rendermode InteractiveServer
 
-<PageTitle>Home</PageTitle>
+<PageTitle>@_language.ThreeBodyFractal</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>@_language.ThreeBodyFractal</h1>
 
-Welcome to your new app.
+<p>@_language.ThreeBodyFractalDescription</p>
+
+<h2>@_language.ParametersTableHeader</h2>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>@_language.ParameterName</th>
+        <th>@_language.ParameterDescription</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr>
+        <td>@_language.SandBoxWidth</td>
+        <td>@_language.SandBoxWidthDescription</td>
+    </tr>
+
+    <tr>
+        <td>@_language.SandBoxHeight</td>
+        <td>@_language.SandBoxHeightDescription</td>
+    </tr>
+
+    <tr>
+        <td>@_language.SandBoxTime</td>
+        <td>@_language.SandBoxTimeDescription</td>
+    </tr>
+
+    <tr>
+        <td>@_language.SandBoxTimeStep</td>
+        <td>@_language.SandBoxTimeStepDescription</td>
+    </tr>
+
+    <tr>
+        <td>@_language.SandBoxZoom</td>
+        <td>@_language.SandBoxZoomDescription</td>
+    </tr>
+
+    <tr>
+        <td>@_language.SandBoxCenterX</td>
+        <td>@_language.SandBoxCenterXDescription</td>
+    </tr>
+
+    <tr>
+        <td>@_language.SandBoxCenterY</td>
+        <td>@_language.SandBoxCenterYDescription</td>
+    </tr>
+
+    <tr>
+        <td>@_language.SandBoxConfigMass</td>
+        <td>@_language.SandBoxConfigMassDescription</td>
+    </tr>
+
+    <tr>
+        <td>@_language.SandBoxConfigPositionX</td>
+        <td>@_language.SandBoxConfigPositionXDescription</td>
+    </tr>
+
+    <tr>
+        <td>@_language.SandBoxConfigPositionY</td>
+        <td>@_language.SandBoxConfigPositionYDescription</td>
+    </tr>
+
+    <tr>
+        <td>@_language.SandBoxConfigVelocityX</td>
+        <td>@_language.SandBoxConfigVelocityXDescription</td>
+    </tr>
+
+    <tr>
+        <td>@_language.SandBoxConfigVelocityY</td>
+        <td>@_language.SandBoxConfigVelocityYDescription</td>
+    </tr>
+    
+    </tbody>
+</table>
+
+@code {
+
+    [SupplyParameterFromQuery(Name = "lang")]
+    private string _languageCode { get; set; }
+
+    private Language _language = new German();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _language = Language.GetLanguage(_languageCode);
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+}

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Drawing;
 using System.Numerics;
+using System.Runtime.Versioning;
 using System.Text;
 using Newtonsoft.Json;
 using ThreeBody;
@@ -8,6 +9,7 @@ using ThreeBodySandbox.Languages;
 
 namespace ThreeBodySandbox.Components.Pages;
 
+[SupportedOSPlatform("windows")]
 public partial class Simulation : ComponentBase
 {
 	[SupplyParameterFromQuery(Name = "x")] private float x { get; set; }
@@ -33,11 +35,7 @@ public partial class Simulation : ComponentBase
 	{
 		if (firstRender)
 		{
-			_language = languageCode switch
-			{
-				"en" => new English(),
-				_    => new German()
-			};
+			_language = Language.GetLanguage(languageCode);
 			
 			await InvokeAsync(StateHasChanged);
 			

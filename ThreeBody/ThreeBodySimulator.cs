@@ -1,11 +1,13 @@
 ﻿using System.Drawing;
 using System.Numerics;
+using System.Runtime.Versioning;
 using System.Security.Cryptography;
 using Canvas.Components;
 using ThreeBody.Physics;
 
 namespace ThreeBody;
 
+[SupportedOSPlatform("windows")]
 public static class ThreeBodySimulator
 {
 	public static void Simulate(PhysicsBody[] bodies,
