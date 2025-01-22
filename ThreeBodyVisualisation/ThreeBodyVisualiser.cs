@@ -15,8 +15,8 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 	private PhysicsBody[] _bodies;
 	private readonly Canvas.Canvas _canvas;
 	private Thread _thread;
-	private float _timeSinceStart;
-	private float _runTime;
+	private double _timeSinceStart;
+	private double _runTime;
 	
 	public override int X { get => _canvas.X; set => _canvas.X = value; }
 	public override int Y { get => _canvas.Y; set => _canvas.Y = value; }
@@ -34,12 +34,12 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 	/// <summary>
 	/// Shouldn't affect the speed of the simulation but rather the quality
 	/// </summary>
-	public float TimeStep { get; set; }
+	public double TimeStep { get; set; }
 
 	/// <summary>
 	/// Affects the speed of the simulation as well as the quality
 	/// </summary>
-	public float StepsPerSecond { get; set; }
+	public double StepsPerSecond { get; set; }
 
 	private bool _running;
 	private SynchronizationContext _syncContext;
@@ -47,13 +47,13 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 	private readonly BezierCurve[] _orbits;
 	private readonly PositionedComponent[] _bodyComponents;
 
-	public ThreeBodyVisualiser(float runTime = -1f,
+	public ThreeBodyVisualiser(double runTime = -1f,
 		int x = 0,
 		int y = 0,
 		int width = 800,
 		int height = 800,
-		float timeStep = 0.01f,
-		float stepsPerSecond = 10f)
+		double timeStep = 0.01f,
+		double stepsPerSecond = 10f)
 	{
 		_canvas = new Canvas.Canvas(0, 0, width, height);
 		

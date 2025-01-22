@@ -1,6 +1,5 @@
-using System.Numerics;
-using System.Security.Cryptography;
 using Canvas.Components.Interfaces;
+using CSShaders.Shaders.Vectors;
 using Presentation.Slides;
 using SlidePresenter;
 using ThreeBody;
@@ -17,26 +16,48 @@ internal static class Program
 	[STAThread]
 	private static void Main()
 	{
+		// TODO: Very pretty start config:
+		// [
+		// new PhysicsBody()
+		// {
+		// 	Mass = 100,
+		// 	Position = new Vec2(0, 100),
+		// 	Velocity = new Vec2(15, 0),
+		// },
+		// new PhysicsBody()
+		// {
+		// 	Mass = 100,
+		// 	Position = new Vec2(0, -100),
+		// 	Velocity = new Vec2(-7, 7),
+		// },
+		// new PhysicsBody()
+		// 	{
+		// 		Mass = 100,
+		// 		Position = new Vec2(0, 0),
+		// 		Velocity = new Vec2(-8, -8),
+		// 	}
+		// 	]
+		
 		ThreeBodyVisualiser threeBodyVisualiser = new();
 		PhysicsBody[] config =
 		[
 			new PhysicsBody()
 			{
 				Mass = 100,
-				Position = new Vector2(0, 100),
-				Velocity = new Vector2(15, 0),
+				Position = new Vec2(0, 100),
+				Velocity = new Vec2(15, 0),
 			},
 			new PhysicsBody()
 			{
 				Mass = 100,
-				Position = new Vector2(0, -100),
-				Velocity = new Vector2(-7, 7),
+				Position = new Vec2(0, -100),
+				Velocity = new Vec2(-7, 7),
 			},
 			new PhysicsBody()
 			{
 				Mass = 100,
-				Position = new Vector2(0, 0),
-				Velocity = new Vector2(-8, -8),
+				Position = new Vec2(0, 0),
+				Velocity = new Vec2(-8, -8),
 			}
 		];
 		threeBodyVisualiser.SetConfig(config);

@@ -12,6 +12,9 @@
       <Reference Include="Canvas">
         <HintPath>..\..\Canvas\Canvas\bin\Release\net6.0\Canvas.dll</HintPath>
       </Reference>
+      <Reference Include="CSShaders">
+        <HintPath>..\..\CSShaders\CSShaders\bin\Release\net8.0\CSShaders.dll</HintPath>
+      </Reference>
       <Reference Include="PresentationForm">
         <HintPath>..\..\SlidePresenter\PresentationForm\bin\Release\net8.0-windows\PresentationForm.dll</HintPath>
       </Reference>

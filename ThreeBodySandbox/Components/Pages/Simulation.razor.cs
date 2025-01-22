@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Drawing;
-using System.Numerics;
 using System.Runtime.Versioning;
 using System.Text;
+using CSShaders.Shaders.Vectors;
 using Newtonsoft.Json;
 using ThreeBody;
 using ThreeBodySandbox.Languages;
@@ -13,14 +13,14 @@ namespace ThreeBodySandbox.Components.Pages;
 public partial class Simulation : ComponentBase
 {
 	[Inject] private LanguageState _languageState { get; set; }
-	[SupplyParameterFromQuery(Name = "x")] private float x { get; set; }
-	[SupplyParameterFromQuery(Name = "y")] private float y { get; set; }
+	[SupplyParameterFromQuery(Name = "x")] private double x { get; set; }
+	[SupplyParameterFromQuery(Name = "y")] private double y { get; set; }
 
 	[SupplyParameterFromQuery(Name = "time")]
-	private float time { get; set; }
+	private double time { get; set; }
 
 	[SupplyParameterFromQuery(Name = "timeStep")]
-	private float timeStep { get; set; }
+	private double timeStep { get; set; }
 
 	[SupplyParameterFromQuery(Name = "startConfig")]
 	private string startConfigBase64 { get; set; }
@@ -46,7 +46,7 @@ public partial class Simulation : ComponentBase
 				Encoding.UTF8.GetString(
 					Convert.FromBase64String(startConfigBase64)));
 
-			startConfig[0].Position += new Vector2(x, y);
+			startConfig[0].Position += new Vec2(x, y);
 
 			_image = ThreeBodySimulator.GetSimulationImage(startConfig, 1000, 1000, time, timeStep, true, true);
 			_loaded = true;

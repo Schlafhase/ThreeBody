@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
-using System.Numerics;
 using System.Runtime.Versioning;
 using Canvas.Components.Interfaces;
+using CSShaders.Shaders.Vectors;
 using ThreeBody;
 using ThreeBodyFractal;
 
@@ -11,14 +11,15 @@ namespace ThreeBodyFractalVisualisation;
 public class ThreeBodyFractalVisualiser : PositionedRectangleSizedComponent
 {
 	public FractalType Type { get; set; } = FractalType.Distance;
-	public float SimulationTime { get; set; } = 20f;
-	public Vector2 Center { get; set; } = new Vector2(0, 0);
-	public float Zoom { get; set; } = 1f;
+	public double SimulationTime { get; set; } = 20f;
+	public double TimeStep { get; set; } = 0.1f;
+	public Vec2 Center { get; set; } = new Vec2(0, 0);
+	public double Zoom { get; set; } = 1f;
 
 	public PhysicsBody[] StartConfig
 	{
 		get => _startConfig;
-		set
+		init
 		{
 			if (value.Length != 3)
 			{
@@ -29,9 +30,9 @@ public class ThreeBodyFractalVisualiser : PositionedRectangleSizedComponent
 	}
 
 	private Bitmap _currentImage;
-	private Thread _updateImageThread;
+	private readonly Thread _updateImageThread;
 	
-	private PhysicsBody[] _startConfig;
+	private readonly PhysicsBody[] _startConfig;
 
 	public ThreeBodyFractalVisualiser(int width = 0, int height = 0, int x = 0, int y = 0)
 	{
@@ -49,7 +50,7 @@ public class ThreeBodyFractalVisualiser : PositionedRectangleSizedComponent
 		}
 		
 		_updateImageThread = new Thread(UpdateImage);
-		_startConfig = ThreeBodySimulator.GenerateStableConfiguration(1);
+		_startConfig = ThreeBodySimulator.GenerateStableConfiguration();
 		UpdateImageThreading();
 	}
 
@@ -60,7 +61,7 @@ public class ThreeBodyFractalVisualiser : PositionedRectangleSizedComponent
 			return;
 		}
 		
-		_currentImage = Fractal.GetFractal(Type, StartConfig, Width, Height, SimulationTime, Center, Zoom);
+		_currentImage = Fractal.GetFractal(Type, StartConfig, Width, Height, SimulationTime, TimeStep, Center, Zoom);
 		Parent?.Update();
 	}
 

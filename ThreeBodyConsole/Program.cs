@@ -2,8 +2,8 @@
 
 using System.Diagnostics;
 using System.Drawing;
-using System.Numerics;
 using System.Runtime.Versioning;
+using CSShaders.Shaders.Vectors;
 using ThreeBody;
 using ThreeBodyFractal;
 
@@ -30,10 +30,10 @@ internal class Program
 		readInt("Breite", out int width);
 		readInt("Höhe", out int height);
 
-		readFloat("Zoom", out float zoom);
-		readFloat("Zeitschrittweite", out float timeStep);
-		readFloat("Mitte x", out float centerX);
-		readFloat("Mitte y", out float centerY);
+		readdouble("Zoom", out double zoom);
+		readdouble("Zeitschrittweite", out double timeStep);
+		readdouble("Mitte x", out double centerX);
+		readdouble("Mitte y", out double centerY);
 
 		Console.Write("Konfiguration selbst eingeben? (y/n) ");
 		bool customConfig = Console.ReadKey().Key == ConsoleKey.Y;
@@ -49,50 +49,56 @@ internal class Program
 			{
 				Console.WriteLine($"Körper {i}");
 
-				readFloat("Position x", out float posX);
-				readFloat("Position y", out float posY);
-				readFloat("Geschwindigkeit x", out float velX);
-				readFloat("Geschwindigkeit y", out float velY);
-				readFloat("Masse", out float mass);
+				readdouble("Position x", out double posX);
+				readdouble("Position y", out double posY);
+				readdouble("Geschwindigkeit x", out double velX);
+				readdouble("Geschwindigkeit y", out double velY);
+				readdouble("Masse", out double mass);
 
 				bodies[i] = new PhysicsBody()
 				{
 					Mass = mass,
-					Position = new Vector2(posX, posY),
-					Velocity = new Vector2(velX, velY)
+					Position = new Vec2(posX, posY),
+					Velocity = new Vec2(velX, velY)
 				};
 			}
 		}
 
 		string fileName;
 
-		if (fractalType == 1)
+		switch (fractalType)
 		{
-			readFloat("Zeit", out float time);
+			case 1:
+			{
+				readdouble("Zeit", out double time);
 
-			using Bitmap bmp = Fractal.GetFractal(FractalType.Distance, bodies, width, height, time, timeStep,
-												  new Vector2(centerX, centerY), zoom, true);
-			fileName = "fractal-distance.png";
-			bmp.Save(fileName);
-		}
-		else if (fractalType == 3)
-		{
-			readFloat("Zeit", out float time);
+				using Bitmap bmp = Fractal.GetFractal(FractalType.Distance, bodies, width, height, time, timeStep,
+													  new Vec2(centerX, centerY), zoom, true);
+				fileName = "fractal-distance.png";
+				bmp.Save(fileName);
+				break;
+			}
+			case 3:
+			{
+				readdouble("Zeit", out double time);
 
-			using Bitmap bmp = Fractal.GetFractalChaos(bodies, width, height, time, timeStep,
-													   new Vector2(centerX, centerY), zoom, true);
-			fileName = "fractal-chaos.png";
-			bmp.Save(fileName);
-		}
-		else
-		{
-			readInt("Maximale Iterationen", out int maxIterations);
-			readInt("Radius", out int radius);
+				using Bitmap bmp = Fractal.GetFractalChaos(bodies, width, height, time, timeStep,
+														   new Vec2(centerX, centerY), zoom, true);
+				fileName = "fractal-chaos.png";
+				bmp.Save(fileName);
+				break;
+			}
+			default:
+			{
+				readInt("Maximale Iterationen", out int maxIterations);
+				readInt("Radius", out int radius);
 
-			using Bitmap bmp = Fractal.GetFractalIterations(bodies, width, height, maxIterations, radius, timeStep,
-															new Vector2(centerX, centerY), zoom, true);
-			fileName = "fractal-radius.png";
-			bmp.Save(fileName);
+				using Bitmap bmp = Fractal.GetFractalIterations(bodies, width, height, maxIterations, radius, timeStep,
+																new Vec2(centerX, centerY), zoom, true);
+				fileName = "fractal-radius.png";
+				bmp.Save(fileName);
+				break;
+			}
 		}
 
 		Console.WriteLine(
@@ -116,11 +122,11 @@ internal class Program
 		Console.ReadKey();
 	}
 
-	private static void readFloat(string name, out float value)
+	private static void readdouble(string name, out double value)
 	{
-		Console.Write($"{name} (float): ");
+		Console.Write($"{name} (double): ");
 
-		while (!float.TryParse(Console.ReadLine(), out value))
+		while (!double.TryParse(Console.ReadLine(), out value))
 		{
 			Console.BackgroundColor = ConsoleColor.Red;
 			Console.ForegroundColor = ConsoleColor.Black;

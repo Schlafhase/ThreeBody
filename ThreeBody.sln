@@ -4,8 +4,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreeBody", "ThreeBody\Thre
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreeBodyFractal", "ThreeBodyFractal\ThreeBodyFractal.csproj", "{473E9A16-D567-4673-AF71-D0A9F43FC418}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreeBodyFractalVisualisationOld", "ThreeBodyFractalVisualisationOld\ThreeBodyFractalVisualisationOld.csproj", "{374E8C23-790D-4915-9ACB-1C680FEBC233}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Presentation\Presentation.csproj", "{7BE88A52-61C8-4047-90AE-B6A911EBB9A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreeBodyVisualisation", "ThreeBodyVisualisation\ThreeBodyVisualisation.csproj", "{ADF99C1B-0C72-4F67-A243-E770DE19E180}"
@@ -30,10 +28,6 @@ Global
 		{473E9A16-D567-4673-AF71-D0A9F43FC418}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{473E9A16-D567-4673-AF71-D0A9F43FC418}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{473E9A16-D567-4673-AF71-D0A9F43FC418}.Release|Any CPU.Build.0 = Release|Any CPU
-		{374E8C23-790D-4915-9ACB-1C680FEBC233}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{374E8C23-790D-4915-9ACB-1C680FEBC233}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{374E8C23-790D-4915-9ACB-1C680FEBC233}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{374E8C23-790D-4915-9ACB-1C680FEBC233}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7BE88A52-61C8-4047-90AE-B6A911EBB9A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7BE88A52-61C8-4047-90AE-B6A911EBB9A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BE88A52-61C8-4047-90AE-B6A911EBB9A3}.Release|Any CPU.ActiveCfg = Release|Any CPU

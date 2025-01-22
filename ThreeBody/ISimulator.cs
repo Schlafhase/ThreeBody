@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace ThreeBody;
+﻿namespace ThreeBody;
 
 public interface ISimulator
 {

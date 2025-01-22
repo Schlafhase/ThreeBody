@@ -17,4 +17,11 @@
       <PackageReference Include="System.Drawing.Common" Version="9.0.0" />
     </ItemGroup>
 
+
+    <ItemGroup>
+      <Reference Include="CSShaders">
+        <HintPath>..\..\CSShaders\CSShaders\bin\Release\net8.0\CSShaders.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

@@ -1,10 +1,10 @@
-﻿using System.Numerics;
+﻿using CSShaders.Shaders.Vectors;
 
 namespace ThreeBody.Physics;
 
 public static class Gravity
 {
-    public static void SimulateGravity(PhysicsBody[] bodies, float timeStep)
+    public static void SimulateGravity(PhysicsBody[] bodies, double timeStep)
     {
         for (int i = 0; i < bodies.Length; i++)
         {
@@ -15,9 +15,9 @@ public static class Gravity
                     continue;
                 }
 
-                Vector2 direction = bodies[j].Position - bodies[i].Position;
-                float distance = direction.Length();
-                float force = (0.1f * bodies[i].Mass * bodies[j].Mass) / (distance*distance);
+                Vec2 direction = bodies[j].Position - bodies[i].Position;
+                double distance = direction.Length;
+                double force = (0.1f * bodies[i].Mass * bodies[j].Mass) / (distance*distance);
                 
                 bodies[i].Velocity += direction * force * timeStep;
             }

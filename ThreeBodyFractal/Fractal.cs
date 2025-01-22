@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Drawing;
-using System.Numerics;
+﻿using System.Drawing;
 using System.Runtime.Versioning;
+using CSShaders.Shaders.Vectors;
 using ThreeBody;
 
 namespace ThreeBodyFractal;
@@ -21,7 +20,7 @@ public static class Fractal
         Color.DarkBlue, Color.Aqua
     ];
     
-    public static Bitmap GetFractal(FractalType type, PhysicsBody[] startConfig, int width, int height, float time, float timeStep, Vector2 center, float zoom, bool logProgress = false)
+    public static Bitmap GetFractal(FractalType type, PhysicsBody[] startConfig, int width, int height, double time, double timeStep, Vec2 center, double zoom, bool logProgress = false)
     {
         return type switch
         {
@@ -31,7 +30,7 @@ public static class Fractal
         };
     }
     
-    public static Bitmap GetFractalIterations(PhysicsBody[] startConfig, int width, int height, int maxIterations, int radius, float timeStep, Vector2 center, float zoom, bool logProgress = false)
+    public static Bitmap GetFractalIterations(PhysicsBody[] startConfig, int width, int height, int maxIterations, int radius, double timeStep, Vec2 center, double zoom, bool logProgress = false)
     {
         object bmpLocker = new();
         object consoleLocker = new();
@@ -46,10 +45,10 @@ public static class Fractal
             {
                 PhysicsBody[] config = startConfig.ToArray();
 
-                float fractalX = (x - width / 2f) / zoom + center.X;
-                float fractalY = (y - height / 2f) / zoom + center.Y;
+                double fractalX = (x - width / 2f) / zoom + center.X;
+                double fractalY = (y - height / 2f) / zoom + center.Y;
 
-                config[0].Position += new Vector2(fractalX, fractalY);
+                config[0].Position += new Vec2(fractalX, fractalY);
 
                 int iterations = ThreeBodySimulator.SimulateUntil(config, timeStep,
                                                  (bodies, i) =>
@@ -59,7 +58,7 @@ public static class Fractal
 
                 lock (bmpLocker)
                 {
-                    Color colour = iterations >= maxIterations ? Color.Black : lerpColours(palette, iterations / (float)maxIterations);
+                    Color colour = iterations >= maxIterations ? Color.Black : lerpColours(palette, iterations / (double)maxIterations);
                     bmp.SetPixel(x, y, colour);
                 }
             });
@@ -82,11 +81,11 @@ public static class Fractal
                 
                 Console.BackgroundColor = ConsoleColor.Green;
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write(string.Join("", Enumerable.Repeat("#", (int)(column / (float)width * 50))));
+                Console.Write(string.Join("", Enumerable.Repeat("#", (int)(column / (double)width * 50))));
                 
                 Console.BackgroundColor = ConsoleColor.Gray;
                 Console.ForegroundColor = ConsoleColor.Gray;
-                Console.WriteLine(string.Join("", Enumerable.Repeat(".", 50 - (int)(column / (float)width * 50))));
+                Console.WriteLine(string.Join("", Enumerable.Repeat(".", 50 - (int)(column / (double)width * 50))));
                 
                 Console.ResetColor();
                 Console.WriteLine($"Vergangene Zeit: {DateTime.UtcNow - start}");
@@ -101,12 +100,12 @@ public static class Fractal
         return bmp;
     }
 
-    public static Bitmap GetFractalChaos(PhysicsBody[] startConfig, int width, int height, float time, float timeStep, Vector2 center, float zoom, bool logProgress = false)
+    public static Bitmap GetFractalChaos(PhysicsBody[] startConfig, int width, int height, double time, double timeStep, Vec2 center, double zoom, bool logProgress = false)
     {
         object bmpLocker = new();
         object consoleLocker = new();
         Bitmap bmp = new(width, height);
-        float factor = 8 / time;
+        double factor = 8 / time;
 
         DateTime start = DateTime.UtcNow;
         int column = 0;
@@ -117,10 +116,10 @@ public static class Fractal
             {
                 PhysicsBody[] config = startConfig.ToArray();
 
-                float fractalX = (x - width / 2f) / zoom + center.X;
-                float fractalY = (y - height / 2f) / zoom + center.Y;
+                double fractalX = (x - width / 2f) / zoom + center.X;
+                double fractalY = (y - height / 2f) / zoom + center.Y;
 
-                config[0].Position += new Vector2(fractalX, fractalY);
+                config[0].Position += new Vec2(fractalX, fractalY);
 
                 PhysicsBody[] start = config.ToArray();
 
@@ -129,7 +128,7 @@ public static class Fractal
                 lock (bmpLocker)
                 {
                     // Color colour = lerpColours(palette, directionChanges / (time/6));
-                    float brightness = Math.Clamp(directionChanges / (time / 600), 0, 255);
+                    double brightness = Math.Clamp(directionChanges / (time / 600), 0, 255);
                     bmp.SetPixel(x, y, Color.FromArgb((int)brightness, (int)brightness, (int)brightness));
                 }
             });
@@ -152,11 +151,11 @@ public static class Fractal
                 
                 Console.BackgroundColor = ConsoleColor.Green;
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write(string.Join("", Enumerable.Repeat("#", (int)(column / (float)width * 50))));
+                Console.Write(string.Join("", Enumerable.Repeat("#", (int)(column / (double)width * 50))));
                 
                 Console.BackgroundColor = ConsoleColor.Gray;
                 Console.ForegroundColor = ConsoleColor.Gray;
-                Console.WriteLine(string.Join("", Enumerable.Repeat(".", 50 - (int)(column / (float)width * 50))));
+                Console.WriteLine(string.Join("", Enumerable.Repeat(".", 50 - (int)(column / (double)width * 50))));
                 
                 Console.ResetColor();
                 Console.WriteLine($"Vergangene Zeit: {DateTime.UtcNow - start}");
@@ -172,7 +171,7 @@ public static class Fractal
         return bmp;
     }
     
-    private static Color lerpColours(Color[] palette, float t)
+    private static Color lerpColours(Color[] palette, double t)
     {
         if (palette == null || palette.Length == 0)
         {
@@ -187,9 +186,9 @@ public static class Fractal
                 return palette[^1];
         }
 
-        float scaledT = t * (palette.Length - 2);
+        double scaledT = t * (palette.Length - 2);
         int index = (int)scaledT;
-        float fraction = scaledT - index;
+        double fraction = scaledT - index;
 
         Color color1 = palette[index];
         Color color2 = palette[index + 1];
@@ -202,12 +201,12 @@ public static class Fractal
     }
 
     // TODO: CancellationToken
-    private static Bitmap getFractal(PhysicsBody[] startConfig, int width, int height, float time, float timeStep, Vector2 center, float zoom, Func<PhysicsBody[], PhysicsBody[], float, Color> calculateColor, bool logProgress = false)
+    private static Bitmap getFractal(PhysicsBody[] startConfig, int width, int height, double time, double timeStep, Vec2 center, double zoom, Func<PhysicsBody[], PhysicsBody[], double, Color> calculateColor, bool logProgress = false)
     {
         object bmpLocker = new();
         object consoleLocker = new();
         Bitmap bmp = new(width, height);
-        float factor = 8 / time;
+        double factor = 8 / time;
 
         DateTime start = DateTime.UtcNow;
         int column = 0;
@@ -218,16 +217,16 @@ public static class Fractal
             {
                 PhysicsBody[] config = startConfig.ToArray();
 
-                float fractalX = (x - width / 2f) / zoom + center.X;
-                float fractalY = (y - height / 2f) / zoom + center.Y;
+                double fractalX = (x - width / 2f) / zoom + center.X;
+                double fractalY = (y - height / 2f) / zoom + center.Y;
 
                 // if (x == 400 && y == 400)
                 // {
                 //     Console.WriteLine($"{fractalX}, {fractalY}");
                 // }
 
-                config[0].Position += new Vector2(fractalX, fractalY);
-                // config[1].Position += new Vector2(-fractalX, fractalY);
+                config[0].Position += new Vec2(fractalX, fractalY);
+                // config[1].Position += new Vec2(-fractalX, fractalY);
 
                 PhysicsBody[] start = config.ToArray();
 
@@ -257,11 +256,11 @@ public static class Fractal
                 
                 Console.BackgroundColor = ConsoleColor.Green;
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write(string.Join("", Enumerable.Repeat("#", (int)(column / (float)width * 50))));
+                Console.Write(string.Join("", Enumerable.Repeat("#", (int)(column / (double)width * 50))));
                 
                 Console.BackgroundColor = ConsoleColor.Gray;
                 Console.ForegroundColor = ConsoleColor.Gray;
-                Console.WriteLine(string.Join("", Enumerable.Repeat(".", 50 - (int)(column / (float)width * 50))));
+                Console.WriteLine(string.Join("", Enumerable.Repeat(".", 50 - (int)(column / (double)width * 50))));
                 
                 Console.ResetColor();
                 Console.WriteLine($"Vergangene Zeit: {DateTime.UtcNow - start}");
@@ -277,11 +276,11 @@ public static class Fractal
         return bmp;
     }
     
-    private static Color getColourFromDistance(PhysicsBody[] a, PhysicsBody[] b, float factor = 0.3f)
+    private static Color getColourFromDistance(PhysicsBody[] a, PhysicsBody[] b, double factor = 0.3f)
     {
         return Color.FromArgb(
-            Math.Clamp((int)(Vector2.Distance(a[0].Position, b[0].Position) * factor), 0, 255),
-            Math.Clamp((int)(Vector2.Distance(a[1].Position, b[1].Position) * factor), 0, 255),
-            Math.Clamp((int)(Vector2.Distance(a[2].Position, b[2].Position) * factor), 0, 255));
+            Math.Clamp((int)((a[0].Position - b[0].Position).Length * factor), 0, 255),
+            Math.Clamp((int)((a[1].Position - b[1].Position).Length * factor), 0, 255),
+            Math.Clamp((int)((a[2].Position - b[2].Position).Length * factor), 0, 255));
     }
 }

@@ -1,5 +1,5 @@
-﻿using System.Numerics;
-using Canvas.Components.Interfaces;
+﻿using Canvas.Components.Interfaces;
+using CSShaders.Shaders.Vectors;
 using SlidePresenter;
 using ThreeBody;
 using ThreeBodyFractalVisualisation;
@@ -20,22 +20,23 @@ public sealed class Slide2 : Slide
 					new PhysicsBody()
 					{
 						Mass = 100,
-						Position = new Vector2(0, 100),
-						Velocity = new Vector2(15, 0),
+						Position = new Vec2(0, 100),
+						Velocity = new Vec2(15, 0),
 					},
 					new PhysicsBody()
 					{
 						Mass = 100,
-						Position = new Vector2(0, -100),
-						Velocity = new Vector2(-7, 7),
+						Position = new Vec2(0, -100),
+						Velocity = new Vec2(-7, 7),
 					},
 					new PhysicsBody()
 					{
 						Mass = 100,
-						Position = new Vector2(0, 0),
-						Velocity = new Vector2(-8, -8),
+						Position = new Vec2(0, 0),
+						Velocity = new Vec2(-8, -8),
 					}
-				]
+				],
+				TimeStep = 0.01f
 			})
 			{
 				X = 0.5f,
