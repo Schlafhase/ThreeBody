@@ -12,6 +12,7 @@ namespace ThreeBodySandbox.Components.Pages;
 [SupportedOSPlatform("windows")]
 public partial class Simulation : ComponentBase
 {
+	[Inject] private LanguageState _languageState { get; set; }
 	[SupplyParameterFromQuery(Name = "x")] private float x { get; set; }
 	[SupplyParameterFromQuery(Name = "y")] private float y { get; set; }
 
@@ -23,11 +24,12 @@ public partial class Simulation : ComponentBase
 
 	[SupplyParameterFromQuery(Name = "startConfig")]
 	private string startConfigBase64 { get; set; }
+
 	[SupplyParameterFromQuery(Name = "lang")]
 	private string languageCode { get; set; }
 
 	private Language _language = new German();
-	
+
 	private Bitmap? _image;
 	private bool _loaded;
 
@@ -36,9 +38,10 @@ public partial class Simulation : ComponentBase
 		if (firstRender)
 		{
 			_language = Language.GetLanguage(languageCode);
-			
+			_languageState.Current = _language;
+
 			await InvokeAsync(StateHasChanged);
-			
+
 			PhysicsBody[] startConfig = JsonConvert.DeserializeObject<PhysicsBody[]>(
 				Encoding.UTF8.GetString(
 					Convert.FromBase64String(startConfigBase64)));

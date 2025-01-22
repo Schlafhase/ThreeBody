@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
 	   .AddInteractiveServerComponents();
 
-// builder.Services.AddSingleton<Language>(_ => new German());
+builder.Services.AddSingleton<LanguageState>();
 
 var app = builder.Build();
 

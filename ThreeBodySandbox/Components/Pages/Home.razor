@@ -7,7 +7,7 @@
 
 <h1>@_language.ThreeBodyFractal</h1>
 
-<p>@_language.ThreeBodyFractalDescription</p>
+<p>@((MarkupString)_language.ThreeBodyFractalDescription)</p>
 
 <h2>@_language.ParametersTableHeader</h2>
 
@@ -84,7 +84,8 @@
 </table>
 
 @code {
-
+    [Inject]
+    private LanguageState _languageState { get; set; }
     [SupplyParameterFromQuery(Name = "lang")]
     private string _languageCode { get; set; }
 
@@ -95,8 +96,8 @@
         if (firstRender)
         {
             _language = Language.GetLanguage(_languageCode);
+            _languageState.Current = _language;
             await InvokeAsync(StateHasChanged);
         }
     }
-
 }

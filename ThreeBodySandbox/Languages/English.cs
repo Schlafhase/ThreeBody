@@ -2,6 +2,8 @@
 
 public class English : Language
 {
+	public override string LanguageCode => "en";
+	
 	public override string BitmapImageLoading => "Loading";
 
 	public override string SandBoxGeneral => "General";

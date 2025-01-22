@@ -2,6 +2,7 @@
 
 public abstract class Language
 {
+	public abstract string LanguageCode { get; }
 	public virtual string BitmapImageLoading => "bitmapImage.loading";
 	
 	public virtual string SandBoxGeneral => "sandbox.general";

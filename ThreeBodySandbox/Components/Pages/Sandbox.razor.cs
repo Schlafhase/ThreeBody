@@ -13,6 +13,8 @@ namespace ThreeBodySandbox.Components.Pages;
 [SupportedOSPlatform("windows")]
 public partial class Sandbox : ComponentBase
 {
+	[Inject]
+	private LanguageState _languageState { get; set; }
 	[SupplyParameterFromQuery(Name = "lang")]
 	private string _languageCode { get; set; }
 
@@ -96,6 +98,7 @@ public partial class Sandbox : ComponentBase
 		if (firstRender)
 		{
 			_language = Language.GetLanguage(_languageCode);
+			_languageState.Current = _language;
 			
 			_imageComponent.OnClick += async (x, y) =>
 			{
