@@ -111,10 +111,10 @@ public partial class Sandbox : ComponentBase
 
 				string configBase64 =
 					Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(_bodies)));
-
+				
 				await _jsRuntime.InvokeVoidAsync(
 					"open",
-					$"simulation?x={fractalX}&y={fractalY}&time={_time}&timeStep={_timeStep}&lang={_languageCode}&startConfig={configBase64}");
+					$"simulation?x={fractalX}&y={fractalY}&time={_time}&timeStep={_timeStep}&lang={_languageState.Current.LanguageCode}&startConfig={configBase64}", "_blank");
 			};
 
 			await render();

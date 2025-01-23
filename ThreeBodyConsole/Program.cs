@@ -30,10 +30,10 @@ internal class Program
 		readInt("Breite", out int width);
 		readInt("Höhe", out int height);
 
-		readdouble("Zoom", out double zoom);
-		readdouble("Zeitschrittweite", out double timeStep);
-		readdouble("Mitte x", out double centerX);
-		readdouble("Mitte y", out double centerY);
+		readDouble("Zoom", out double zoom);
+		readDouble("Zeitschrittweite", out double timeStep);
+		readDouble("Mitte x", out double centerX);
+		readDouble("Mitte y", out double centerY);
 
 		Console.Write("Konfiguration selbst eingeben? (y/n) ");
 		bool customConfig = Console.ReadKey().Key == ConsoleKey.Y;
@@ -49,11 +49,11 @@ internal class Program
 			{
 				Console.WriteLine($"Körper {i}");
 
-				readdouble("Position x", out double posX);
-				readdouble("Position y", out double posY);
-				readdouble("Geschwindigkeit x", out double velX);
-				readdouble("Geschwindigkeit y", out double velY);
-				readdouble("Masse", out double mass);
+				readDouble("Position x", out double posX);
+				readDouble("Position y", out double posY);
+				readDouble("Geschwindigkeit x", out double velX);
+				readDouble("Geschwindigkeit y", out double velY);
+				readDouble("Masse", out double mass);
 
 				bodies[i] = new PhysicsBody()
 				{
@@ -70,7 +70,7 @@ internal class Program
 		{
 			case 1:
 			{
-				readdouble("Zeit", out double time);
+				readDouble("Zeit", out double time);
 
 				using Bitmap bmp = Fractal.GetFractal(FractalType.Distance, bodies, width, height, time, timeStep,
 													  new Vec2(centerX, centerY), zoom, true);
@@ -80,7 +80,7 @@ internal class Program
 			}
 			case 3:
 			{
-				readdouble("Zeit", out double time);
+				readDouble("Zeit", out double time);
 
 				using Bitmap bmp = Fractal.GetFractalChaos(bodies, width, height, time, timeStep,
 														   new Vec2(centerX, centerY), zoom, true);
@@ -122,7 +122,7 @@ internal class Program
 		Console.ReadKey();
 	}
 
-	private static void readdouble(string name, out double value)
+	private static void readDouble(string name, out double value)
 	{
 		Console.Write($"{name} (double): ");
 

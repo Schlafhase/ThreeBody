@@ -45,7 +45,7 @@ public partial class BitmapImage : ComponentBase
 	private async Task onClickHandler(MouseEventArgs e)
 	{
 		ImageSize size = await Size;
-		OnClick?.Invoke(e.ClientX - size.X, e.ClientY - size.Y);
+		await OnClick?.Invoke(e.ClientX - size.X, e.ClientY - size.Y);
 	}
 	
 	protected override async Task OnParametersSetAsync()
