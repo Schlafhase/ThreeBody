@@ -17,3 +17,5 @@ Here is a pretty configuration I have found:
 | 1 | 0 | -100 | -7 | 7 | 100 |
 | 2 | 0 | 0 | -8 | -8 | 100 |
 
+Rendering the fractal using that configuration with 20 complete timesteps and 0.01 timesteps each iterations results in this:
+![Result](https://github.com/Schlafhase/ThreeBody/blob/master/ThreeBodySandbox/wwwroot/fractal-distance-hd.png)
