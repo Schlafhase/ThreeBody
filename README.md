@@ -1,4 +1,6 @@
 # Three-Body Fractal
+This is my attempt to find a new fractal. I wanted to do this because I love the Mandelbrot fractal and generative art in general. I made this for a school project.
+## How does it work?
 Every Pixel of the image is assigned a configuration of three bodies (each with position, velocity and mass). This configuration is calculated as follows: The configuration at pixel 0, 0 is a stable configuration where all bodies are placed at regular intervals on a circle with a radius of 100. The velocities are vectors with a magnitude of 10 pi, pointing tangentially away from the circle. For each pixel, the configuration is changed by shifting the position of the first body by the coordinate of the pixel.
 
 Then a simulation is run for each pixel, calculating the gravitational forces between the bodies and adjusting the velocities and positions accordingly. How long and how accurately this simulation is simulated can be configured.
@@ -17,3 +19,5 @@ Here is a pretty configuration I have found:
 | 1 | 0 | -100 | -7 | 7 | 100 |
 | 2 | 0 | 0 | -8 | -8 | 100 |
 
+Rendering the fractal using that configuration with 20 complete timesteps and 0.01 timesteps each iterations results in this:
+![Result](https://github.com/Schlafhase/ThreeBody/blob/master/ThreeBodySandbox/wwwroot/fractal-distance-hd.png)
