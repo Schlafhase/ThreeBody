@@ -1,4 +1,4 @@
-﻿using Canvas.Components.Interfaces;
+﻿using Canvas.Components.Interfaces.Relative;
 using SlidePresenter;
 using ThreeBodyVisualisation;
 

@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 using System.Runtime.Versioning;
-using Canvas.Components.Interfaces;
+using Canvas.Components.Interfaces.Mix;
 using CSShaders.Shaders.Vectors;
 using ThreeBody;
 using ThreeBodyFractal;
@@ -61,7 +61,10 @@ public class ThreeBodyFractalVisualiser : PositionedRectangleSizedComponent
 			return;
 		}
 		
+		Bitmap oldBitmap = _currentImage;
+		
 		_currentImage = Fractal.GetFractal(Type, StartConfig, Width, Height, SimulationTime, TimeStep, Center, Zoom);
+		oldBitmap.Dispose();
 		Parent?.Update();
 	}
 

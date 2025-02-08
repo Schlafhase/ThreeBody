@@ -127,9 +127,10 @@ public static class Fractal
 
                 lock (bmpLocker)
                 {
-                    // Color colour = lerpColours(palette, directionChanges / (time/6));
-                    double brightness = Math.Clamp(directionChanges / (time / 600), 0, 255);
-                    bmp.SetPixel(x, y, Color.FromArgb((int)brightness, (int)brightness, (int)brightness));
+                    Color colour = lerpColours(palette, directionChanges / (time));
+                    bmp.SetPixel(x, y, colour);
+                    // double brightness = Math.Clamp(directionChanges / (time / 600), 0, 255);
+                    // bmp.SetPixel(x, y, Color.FromArgb((int)brightness, (int)brightness, (int)brightness));
                 }
             });
             
@@ -200,7 +201,6 @@ public static class Fractal
         return Color.FromArgb(r, g, b);
     }
 
-    // TODO: CancellationToken
     private static Bitmap getFractal(PhysicsBody[] startConfig, int width, int height, double time, double timeStep, Vec2 center, double zoom, Func<PhysicsBody[], PhysicsBody[], double, Color> calculateColor, bool logProgress = false)
     {
         object bmpLocker = new();

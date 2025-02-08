@@ -1,4 +1,4 @@
-﻿using Canvas.Components.Interfaces;
+﻿using Canvas.Components.Interfaces.Relative;
 using CSShaders.Shaders.Vectors;
 using SlidePresenter;
 using ThreeBody;
@@ -14,7 +14,7 @@ public sealed class Slide2 : Slide
 		[
 			new RelativePositionedComponent<ThreeBodyFractalVisualiser>(new ThreeBodyFractalVisualiser(800, 800)
 			{
-				SimulationTime = 20f,
+				SimulationTime = 10f,
 				StartConfig =
 				[
 					new PhysicsBody()
@@ -36,7 +36,7 @@ public sealed class Slide2 : Slide
 						Velocity = new Vec2(-8, -8),
 					}
 				],
-				TimeStep = 0.01f
+				TimeStep = 0.1f
 			})
 			{
 				X = 0.5f,

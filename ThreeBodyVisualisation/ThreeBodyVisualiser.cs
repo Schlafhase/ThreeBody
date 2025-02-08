@@ -3,7 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Runtime.Versioning;
 using Canvas.Components;
-using Canvas.Components.Interfaces;
+using Canvas.Components.Interfaces.Mix;
+using Canvas.Components.Interfaces.Positioned;
 using ThreeBody;
 using ThreeBody.Physics;
 
@@ -124,7 +125,7 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 					lock (_orbits[i].PointsLocker)
 					{
 						_orbits[i].Points.Add(new Point((int)(_bodies[i].Position.X), (int)(_bodies[i].Position.Y)));
-
+					
 						if (_orbits[i].Points.Count > 500)
 						{
 							_orbits[i].Points.RemoveAt(0);

@@ -24,6 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Mandelbrot fractal 2\Mandelbrot fractal 2.csproj" />
       <ProjectReference Include="..\ThreeBodyFractalVisualisation\ThreeBodyFractalVisualisation.csproj" />
       <ProjectReference Include="..\ThreeBodyVisualisation\ThreeBodyVisualisation.csproj" />
     </ItemGroup>

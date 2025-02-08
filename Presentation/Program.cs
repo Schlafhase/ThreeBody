@@ -1,4 +1,4 @@
-using Canvas.Components.Interfaces;
+using Canvas.Components.Interfaces.Relative;
 using CSShaders.Shaders.Vectors;
 using Presentation.Slides;
 using SlidePresenter;
