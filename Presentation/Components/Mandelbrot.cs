@@ -5,12 +5,17 @@ namespace Presentation.Components;
 public class Mandelbrot : PositionedRectangleSizedComponent
 {
 	private Bitmap _currentImage;
-	private Thread _updateThread;
+	private Thread? _updateThread;
 	private int _iterations = 1000;
 	private double _xLeft = -2.5;
 	private double _xRight = 1;
 	private double _yTop = 1;
 	private double _yBottom = -1;
+
+	public bool KeepAspectRatio = true;
+	public double MandelBrotWidth = 3.5;
+	public double MandelBrotCenterX = -0.75;
+	public double MandelBrotCenterY = 0;
 
 	public int Iterations
 	{
@@ -103,7 +108,6 @@ public class Mandelbrot : PositionedRectangleSizedComponent
 			}
 	
 			UpdateImageThreading();
-			Parent?.Update();
 		}
 	}
 
@@ -123,7 +127,6 @@ public class Mandelbrot : PositionedRectangleSizedComponent
 			}
 
 			UpdateImageThreading();
-			Parent?.Update();
 		}
 	}
 
@@ -134,9 +137,12 @@ public class Mandelbrot : PositionedRectangleSizedComponent
 		XRight = xRight;
 		YTop = yTop;
 		YBottom = yBottom;
-		
-		_updateThread = new Thread(updateImage);
-		UpdateImageThreading();
+	}
+
+	public void LoadPlaceholder(int width = 1920, int height = 1080)
+	{
+		adjustScreenSection(width, height);
+		_currentImage = Mandelbrot_fractal_2.Mandelbrot.CreateBitmap(width, height, 40, XLeft, XRight, YTop, YBottom); // Prerender minimal placeholder
 	}
 	
 	private void updateImage()
@@ -145,11 +151,28 @@ public class Mandelbrot : PositionedRectangleSizedComponent
 		{
 			return;
 		}
+
+		adjustScreenSection();
 		
 		_currentImage = Mandelbrot_fractal_2.Mandelbrot.CreateBitmap(Width, Height, Iterations, XLeft, XRight, YTop, YBottom);
 		Parent?.Update();
 	}
-	
+
+	private void adjustScreenSection(int? customWidth = null, int? customHeight = null)
+	{
+		if (!KeepAspectRatio)
+		{
+			return;
+		}
+
+		double aspectRatioInverse = (double)(customHeight ?? Height) / (customWidth ?? Width);
+			
+		_xLeft = MandelBrotCenterX - MandelBrotWidth / 2;
+		_xRight = MandelBrotCenterX + MandelBrotWidth / 2;
+		_yTop = MandelBrotCenterY + MandelBrotWidth / 2 * aspectRatioInverse;
+		_yBottom = MandelBrotCenterY - MandelBrotWidth / 2 * aspectRatioInverse;
+	}
+
 	public void UpdateImageThreading()
 	{
 		if (_updateThread is not null && _updateThread.IsAlive)

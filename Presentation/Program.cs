@@ -37,44 +37,13 @@ internal static class Program
 		// 		Velocity = new Vec2(-8, -8),
 		// 	}
 		// 	]
-		
-		ThreeBodyVisualiser threeBodyVisualiser = new();
-		PhysicsBody[] config =
-		[
-			new PhysicsBody()
-			{
-				Mass = 100,
-				Position = new Vec2(0, 100),
-				Velocity = new Vec2(15, 0),
-			},
-			new PhysicsBody()
-			{
-				Mass = 100,
-				Position = new Vec2(0, -100),
-				Velocity = new Vec2(-7, 7),
-			},
-			new PhysicsBody()
-			{
-				Mass = 100,
-				Position = new Vec2(0, 0),
-				Velocity = new Vec2(-8, -8),
-			}
-		];
-		threeBodyVisualiser.SetConfig(config);
-
-		RelativePositionedComponent<ThreeBodyVisualiser> threeBodyVisualiserComponent =
-			new RelativePositionedComponent<ThreeBodyVisualiser>(threeBodyVisualiser)
-			{
-				X = 0.5f,
-				Y = 0.5f,
-				Centered = true
-			};
 
 		List<Slide> slides =
 		[
-			new Slide1(),
-			new Slide2(),
-			new Slide3(threeBodyVisualiser, threeBodyVisualiserComponent)
+			new SlideSierpinski(),
+			new SlideKoch(),
+			new SlideFibonacci(),
+			new SlideMandelbrot()
 		];
 
 		// To customize application configuration such as set high DPI settings or default font,
