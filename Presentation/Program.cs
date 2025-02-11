@@ -43,7 +43,9 @@ internal static class Program
 			new SlideSierpinski(),
 			new SlideKoch(),
 			new SlideFibonacci(),
-			new SlideMandelbrot()
+			new SlideMandelbrot(),
+			new SlideSelfSimilarity(),
+			new SlideMandelbrotZoom()
 		];
 
 		// To customize application configuration such as set high DPI settings or default font,
