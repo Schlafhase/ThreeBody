@@ -39,7 +39,6 @@ public class SlideMandelbrotZoom : Slide
 
 	public override void OnLoad()
 	{
-		_mandelbrotComponent.UpdateBoundaries();
 		_mandelbrot.UpdateImageThreading();
 	}
 }

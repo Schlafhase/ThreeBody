@@ -36,7 +36,6 @@ public sealed class SlideMandelbrot : Slide
 
 	public override void OnLoad()
 	{
-		_mandelbrotComponent.UpdateBoundaries();
 		_mandelbrot.UpdateImageThreading();
 	}
 }

@@ -13,16 +13,6 @@ public class SlideSelfSimilarity : Slide
 	{
 		_image = new BitmapImage("../../../assets/koch0.png", 0, 0, 0, 0);
 
-		// RelativeRectangleSizedKeepAspectRatioRelativePositionedComponent<BitmapImage> imageComponent =
-		// 	new(_image)
-		// 	{
-		// 		X = 0.5f,
-		// 		Y = 0.5f,
-		// 		Centered = true,
-		// 		Size = 0.5,
-		// 		AspectRatio = 1.15d
-		// 	};
-
 		Actions.Add(() => _image.Bitmap = Image.FromFile("../../../assets/koch1.png") as Bitmap);
 		Actions.Add(() => _image.Bitmap = Image.FromFile("../../../assets/koch2.png") as Bitmap);
 		Actions.Add(() => _image.Bitmap = Image.FromFile("../../../assets/koch3.png") as Bitmap);

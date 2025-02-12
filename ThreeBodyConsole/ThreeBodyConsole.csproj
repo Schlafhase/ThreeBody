@@ -13,9 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="CSShaders">
-        <HintPath>..\..\CSShaders\CSShaders\bin\Release\net8.0\CSShaders.dll</HintPath>
-      </Reference>
       <Reference Include="System.Drawing.Common">
         <HintPath>..\..\..\..\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\8.0.7\System.Drawing.Common.dll</HintPath>
       </Reference>

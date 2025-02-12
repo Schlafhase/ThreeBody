@@ -45,12 +45,13 @@ internal static class Program
 			new SlideFibonacci(),
 			new SlideMandelbrot(),
 			new SlideSelfSimilarity(),
-			new SlideMandelbrotZoom()
+			new SlideMandelbrotZoom(),
+			new SlideChaos(),
 		];
 
 		// To customize application configuration such as set high DPI settings or default font,
 		// see https://aka.ms/applicationconfiguration.
 		ApplicationConfiguration.Initialize();
-		Application.Run(new PresentationForm.PresentationForm(slides));
+		Application.Run(new PresentationForm.PresentationForm(slides, 6));
 	}
 }

@@ -7,16 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Canvas\Canvas\Canvas.csproj" />
+      <ProjectReference Include="..\..\CSShaders\CSShaders\CSShaders.csproj" />
       <ProjectReference Include="..\ThreeBody\ThreeBody.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Canvas">
-        <HintPath>..\..\Canvas\Canvas\bin\Release\net6.0\Canvas.dll</HintPath>
-      </Reference>
-      <Reference Include="CSShaders">
-        <HintPath>..\..\CSShaders\CSShaders\bin\Release\net8.0\CSShaders.dll</HintPath>
-      </Reference>
       <Reference Include="System.Drawing.Common">
         <HintPath>..\..\..\..\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\8.0.7\System.Drawing.Common.dll</HintPath>
       </Reference>
