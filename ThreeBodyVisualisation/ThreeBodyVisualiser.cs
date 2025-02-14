@@ -3,8 +3,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Runtime.Versioning;
 using Canvas.Components;
+using Canvas.Components.AnimationUtilities;
 using Canvas.Components.Interfaces.Mix;
 using Canvas.Components.Interfaces.Positioned;
+using CSShaders.Shaders.Vectors;
 using ThreeBody;
 using ThreeBody.Physics;
 
@@ -17,7 +19,7 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 	private readonly Canvas.Canvas _canvas;
 	private Thread _thread;
 	private double _timeSinceStart;
-	private readonly double _runTime;
+	public double RunTime;
 
 	private readonly object _tickLocker = new();
 
@@ -50,14 +52,14 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 		get => _canvas.Parent;
 		set
 		{
-			Debug.WriteLine($"Setting parent canvas: {value != null}");
+			// Debug.WriteLine($"Setting parent canvas: {value != null}");
 			_canvas.Parent = value;
 		}
 	}
 
 	public override void Put(Graphics g)
 	{
-		Debug.WriteLine($"Put called, canvas exists: {_canvas != null}, width: {_canvas.Width}, height: {_canvas.Height}");
+		// Debug.WriteLine($"Put called, canvas exists: {_canvas != null}, width: {_canvas.Width}, height: {_canvas.Height}");
 		_canvas.Put(g);
 	}
 
@@ -73,14 +75,17 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 
 	public bool RunInstant { get; set; }
 	public int OrbitLength { get; set; } = 500;
-	
+
+	public double SimulationWidth = 800;
+	public double TransformationRatio => Width / SimulationWidth;
+
 	public bool Running => _running;
 
 	private bool _running;
 	private SynchronizationContext _syncContext;
 
 	private readonly BezierCurve[] _orbits;
-	private readonly PositionedComponent[] _bodyComponents;
+	private PositionedComponent[] _bodyComponents;
 
 	public ThreeBodyVisualiser(double runTime = -1f,
 		int x = 0,
@@ -92,7 +97,7 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 	{
 		_canvas = new Canvas.Canvas(0, 0, width, height);
 
-		_runTime = runTime;
+		RunTime = runTime;
 		X = x;
 		Y = y;
 		Width = width;
@@ -104,9 +109,9 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 
 		_bodyComponents =
 		[
-			new GlowDot(0, 0, 10, 80, Color.Red),
-			new GlowDot(0, 0, 10, 80, Color.Yellow),
-			new GlowDot(0, 0, 10, 80, Color.Blue),
+			new GlowDot(0, 0, (int)(10 * TransformationRatio), (int)(80 * TransformationRatio), Color.Red),
+			new GlowDot(0, 0, (int)(10 * TransformationRatio), (int)(80 * TransformationRatio), Color.Yellow),
+			new GlowDot(0, 0, (int)(10 * TransformationRatio), (int)(80 * TransformationRatio), Color.Blue),
 		];
 
 		_orbits =
@@ -115,6 +120,7 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 			new BezierCurve([]),
 			new BezierCurve([])
 		];
+
 		Array.ForEach(_orbits, orbit => orbit.Pen = Pens.White);
 
 		Array.ForEach(_orbits, _canvas.AddChild);
@@ -127,6 +133,8 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 		{
 			return;
 		}
+		
+		ResizeComponents();
 
 		_syncContext = SynchronizationContext.Current ??
 			throw new NullReferenceException($"{SynchronizationContext.Current} was null");
@@ -134,13 +142,13 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 
 		_thread = new Thread(() =>
 		{
-			Debug.WriteLine("Thread started");
+			// Debug.WriteLine("Thread started");
 
 			while (_running)
 			{
 				lock (_tickLocker)
 				{
-					Debug.WriteLine($"Body 0 position: {_bodies[0].Position}");
+					// Debug.WriteLine($"Body 0 position: {_bodies[0].Position}");
 
 					Array.ForEach(_orbits, orbit =>
 					{
@@ -173,11 +181,13 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 
 							// ReSharper disable once PossibleLossOfFraction
 							_syncContext.Post(
-								_ => _bodyComponents[_i].X = (int)(_bodies[_i].Position.X + _canvas.Width / 2),
+								_ => _bodyComponents[_i].X =
+									(int)(_bodies[_i].Position.X * TransformationRatio + _canvas.Width / 2),
 								null);
 							// ReSharper disable once PossibleLossOfFraction
 							_syncContext.Post(
-								_ => _bodyComponents[_i].Y = (int)(_bodies[_i].Position.Y + _canvas.Height / 2),
+								_ => _bodyComponents[_i].Y =
+									(int)(_bodies[_i].Position.Y * TransformationRatio + _canvas.Height / 2),
 								null);
 						}
 					}
@@ -187,18 +197,18 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 					}
 
 					Parent?.Update();
-					Debug.WriteLine($"Parent update called, parent exists: {Parent != null}");
+					// Debug.WriteLine($"Parent update called, parent exists: {Parent != null}");
 
 					Gravity.SimulateGravity(_bodies, TimeStep);
 					_timeSinceStart += TimeStep;
 
-					if (_runTime >= 0 && _timeSinceStart >= _runTime)
+					if (RunTime >= 0 && _timeSinceStart >= RunTime)
 					{
 						_running = false;
 						break;
 					}
 
-					Debug.WriteLine($"Update complete, time: {_timeSinceStart}");
+					// Debug.WriteLine($"Update complete, time: {_timeSinceStart}");
 
 					if (RunInstant)
 					{
@@ -209,7 +219,7 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 				}
 			}
 
-			Debug.WriteLine("Thread stopped");
+			// Debug.WriteLine("Thread stopped");
 			_syncContext.Send(_ => Parent?.ForceUpdate(), null);
 		})
 		{
@@ -229,9 +239,33 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 		ResetTimeSinceStart();
 		SetConfig(config);
 
+		// _bodyComponents =
+		// [
+		// 	new GlowDot(0, 0, (int)(10 * TransformationRatio), (int)(80 * TransformationRatio), Color.Red),
+		// 	new GlowDot(0, 0, (int)(10 * TransformationRatio), (int)(80 * TransformationRatio), Color.Yellow),
+		// 	new GlowDot(0, 0, (int)(10 * TransformationRatio), (int)(80 * TransformationRatio), Color.Blue),
+		// ];
+
 		lock (_tickLocker)
 		{
 			Array.ForEach(_orbits, orbit => orbit.Points.Clear());
+		}
+	}
+
+	public void ResizeComponents()
+	{
+		lock (_tickLocker)
+		{
+			Array.ForEach(_orbits, orbit => { orbit.Scale = TransformationRatio; });
+			
+			foreach (GlowDot bodyComponent in _bodyComponents.OfType<GlowDot>())
+			{
+				bodyComponent.SuppressUpdate = true;
+				bodyComponent.SetRadius((int)(10 * TransformationRatio), (int)(80 * TransformationRatio));
+				bodyComponent.SuppressUpdate = false;
+			}
+			
+			Parent?.Update();
 		}
 	}
 
@@ -247,6 +281,21 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 			_bodies = bodies;
 		}
 	}
+
+	// public void InterpolatePosition(Vec2 offset, double duration)
+	// {
+	// 	_bodyComponents[0].X.InterpolateThreading(x =>
+	// 	{
+	// 		_bodyComponents[0].X = (int)x;
+	// 		_bodies[0].Position += new Vec2(x, 0);
+	// 	}, _bodyComponents[0].X + offset.X, duration);
+	// 	
+	// 	_bodyComponents[0].Y.InterpolateThreading(y =>
+	// 	{
+	// 		_bodyComponents[0].Y = (int)y;
+	// 		_bodies[0].Position += new Vec2(0, y);
+	// 	}, _bodyComponents[0].Y + offset.Y, duration);
+	// }
 
 	public void ResetTimeSinceStart()
 	{

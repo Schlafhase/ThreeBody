@@ -3,6 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$/../CSShaders" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../Canvas" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../SlidePresenter" vcs="Git" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
   </component>
 </project>

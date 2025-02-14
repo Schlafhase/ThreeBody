@@ -16,7 +16,8 @@ public class SlideMandelbrotZoom : Slide
 		{
 			Width = 1920,
 			Height = 1080,
-			Iterations = 10_000,
+			Quality = 0.5,
+			Iterations = 7_000,
 			MandelBrotWidth = 1.6059746094705611E-11d,
 			MandelBrotCenterX = -0.74326380829271044d,
 			MandelBrotCenterY = 0.18079212896068195d

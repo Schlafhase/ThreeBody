@@ -6,6 +6,8 @@ namespace Presentation.Slides;
 
 public sealed class SlideMandelbrot : Slide
 {
+	public static SlideMandelbrot Instance = new();
+	
 	private readonly Mandelbrot _mandelbrot;
 
 	private readonly RelativeRectangleSizedRelativePositionedComponent<Mandelbrot> _mandelbrotComponent;

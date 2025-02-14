@@ -1,4 +1,5 @@
-﻿using Canvas.Components.AnimationUtilities;
+﻿using System.Security.AccessControl;
+using Canvas.Components.AnimationUtilities;
 using Canvas.Components.Interfaces.Mix;
 using CSShaders.Shaders.Vectors;
 using SlidePresenter;
@@ -12,17 +13,16 @@ public sealed class SlideChaos : Slide
 {
 	private ThreeBodyVisualiser _startConfigVisualiser;
 	private ThreeBodyVisualiser _chaosVisualiser;
-	private double _runTime = 100;
-	private PhysicsBody[] _startConfig = ThreeBodySimulator.GenerateStableConfiguration(1);
-
-	private SynchronizationContext? _syncContext;
-
+	private double _runTime = 20;
+	private PhysicsBody[] _startConfig = ThreeBodySimulator.GenerateStableConfiguration();
 	public SlideChaos()
 	{
 		_startConfigVisualiser = new ThreeBodyVisualiser(0);
 		_chaosVisualiser = new ThreeBodyVisualiser(_runTime)
 		{
-			RunInstant = true
+			RunInstant = true,
+			OrbitLength = int.MaxValue,
+			TimeStep = 0.001
 		};
 
 		#region Slide Content
@@ -40,68 +40,40 @@ public sealed class SlideChaos : Slide
 
 		#endregion
 
+
+		for (int i = 0; i < 4; i++)
+		{
+			Actions.Add(() =>
+			{
+				_startConfig[0].Position += new Vec2(-1, 0);
+				ReloadStartConfigVisualiser();
+				ReloadChaosVisualiser();
+			});
+		}
+		
 		Actions.Add(() =>
 		{
-			_startConfig[0].Position += new Vec2(20, 0);
-
-			if (!_startConfigVisualiser.Running)
-			{
-				_syncContext?.Post(_ => ReloadStartConfigVisualiser(), null);
-			}
-
-			if (!_chaosVisualiser.Running)
-			{
-				_syncContext?.Post(_ => ReloadChaosVisualiser(), null);
-			}
+			_startConfig = ThreeBodySimulator.GenerateStableConfiguration();
+			_startConfig[0].Position += new Vec2(-137, -110);
+			ReloadStartConfigVisualiser();
+			ReloadChaosVisualiser();
 		});
-		Actions.Add(() =>
+		
+		for (int i = 0; i < 5; i++)
 		{
-			_startConfig[0].Position += new Vec2(20, 0);
-
-			if (!_startConfigVisualiser.Running)
+			Actions.Add(() =>
 			{
-				_syncContext?.Post(_ => ReloadStartConfigVisualiser(), null);
-			}
-
-			if (!_chaosVisualiser.Running)
-			{
-				_syncContext?.Post(_ => ReloadChaosVisualiser(), null);
-			}
-		});
-		Actions.Add(() =>
-		{
-			_startConfig[0].Position += new Vec2(20, 0);
-
-			if (!_startConfigVisualiser.Running)
-			{
-				_syncContext?.Post(_ => ReloadStartConfigVisualiser(), null);
-			}
-
-			if (!_chaosVisualiser.Running)
-			{
-				_syncContext?.Post(_ => ReloadChaosVisualiser(), null);
-			}
-		});
-		Actions.Add(() =>
-		{
-			_startConfig[0].Position += new Vec2(20, 20);
-
-			if (!_startConfigVisualiser.Running)
-			{
-				_syncContext?.Post(_ => ReloadStartConfigVisualiser(), null);
-			}
-
-			if (!_chaosVisualiser.Running)
-			{
-				_syncContext?.Post(_ => ReloadChaosVisualiser(), null);
-			}
-		});
+				_startConfig[0].Position += new Vec2(1, 0);
+				ReloadStartConfigVisualiser();
+				ReloadChaosVisualiser();
+			});
+		}
 	}
 
 	public override void OnLoad()
 	{
-		_syncContext = SynchronizationContext.Current;
-
+		_startConfig = ThreeBodySimulator.GenerateStableConfiguration();
+		
 		ReloadStartConfigVisualiser();
 		ReloadChaosVisualiser();
 	}
@@ -114,6 +86,11 @@ public sealed class SlideChaos : Slide
 
 	public void ReloadChaosVisualiser()
 	{
+		if (_chaosVisualiser.Running)
+		{
+			return;
+		}
+		
 		_chaosVisualiser.Reset(_startConfig.ToArray());
 		_chaosVisualiser.Start();
 	}

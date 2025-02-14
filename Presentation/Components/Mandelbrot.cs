@@ -17,6 +17,8 @@ public class Mandelbrot : PositionedRectangleSizedComponent
 	public double MandelBrotCenterX = -0.75;
 	public double MandelBrotCenterY = 0;
 
+	public double Quality = 1;
+
 	public int Iterations
 	{
 		get => _iterations;
@@ -152,9 +154,15 @@ public class Mandelbrot : PositionedRectangleSizedComponent
 			return;
 		}
 
+		int width = Width;
+		int height = Height;
+
 		adjustScreenSection();
+		Bitmap bitmap = Mandelbrot_fractal_2.Mandelbrot.CreateBitmap((int)(width * Quality), (int)(height * Quality), Iterations, XLeft, XRight, YTop, YBottom);
+		_currentImage?.Dispose();
+		_currentImage = new Bitmap(bitmap, width, height);
+		bitmap.Dispose();
 		
-		_currentImage = Mandelbrot_fractal_2.Mandelbrot.CreateBitmap(Width, Height, Iterations, XLeft, XRight, YTop, YBottom);
 		Parent?.Update();
 	}
 
@@ -186,7 +194,7 @@ public class Mandelbrot : PositionedRectangleSizedComponent
 	
 	public override void Put(Graphics g)
 	{
-		if (Width <= 0 || Height <= 0 || _currentImage is null)
+		if (_currentImage.Width <= 0 || _currentImage.Height <= 0 || _currentImage is null)
 		{
 			return;
 		}
