@@ -1,45 +1,31 @@
-﻿using Canvas.Components.Interfaces.Relative;
-using Presentation.Components;
+﻿using Canvas.Components;
+using Canvas.Components.Interfaces.Mix;
 using SlidePresenter;
 
 namespace Presentation.Slides;
 
-public class SlideMandelbrotZoom : Slide
+public sealed class SlideMandelbrotZoom : Slide
 {
-	private readonly Mandelbrot _mandelbrot;
-
-	private readonly RelativeRectangleSizedRelativePositionedComponent<Mandelbrot> _mandelbrotComponent;
-
 	public SlideMandelbrotZoom()
 	{
-		_mandelbrot = new Mandelbrot
-		{
-			Width = 1920,
-			Height = 1080,
-			Quality = 0.5,
-			Iterations = 7_000,
-			MandelBrotWidth = 1.6059746094705611E-11d,
-			MandelBrotCenterX = -0.74326380829271044d,
-			MandelBrotCenterY = 0.18079212896068195d
-		};
-
-		_mandelbrotComponent = new RelativeRectangleSizedRelativePositionedComponent<Mandelbrot>(_mandelbrot)
-		{
-			X = 0,
-			Y = 0,
-			Width = 1,
-			Height = 1
-		};
+		#region Slide Content
 
 		Canvas = new Canvas.Canvas(0, 0,
 		[
-			_mandelbrotComponent
-		]);
-		_mandelbrot.LoadPlaceholder();
-	}
+			new BitmapImage("../../../assets/minibrot.png", 0, 0, 0, 0)
+				.GetRelativeRectangleSizedKeepAspectRatioRelativePositioned
+				(
+					x: 0.5,
+					y: 0.5,
+					size: 1,
+					aspectRatio: 1,
+					centered: true
+				)
+		])
+		{
+			BackgroundColor = Color.Black
+		};
 
-	public override void OnLoad()
-	{
-		_mandelbrot.UpdateImageThreading();
+		#endregion
 	}
 }

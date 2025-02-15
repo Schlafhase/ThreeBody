@@ -50,6 +50,7 @@ internal static class Program
 			new SlideMandelbrotZoom(),
 			new SlideThreeBody(),
 			new SlideChaos(),
+			new SlideDistance()
 		];
 
 		// To customize application configuration such as set high DPI settings or default font,
