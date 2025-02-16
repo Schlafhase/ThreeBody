@@ -22,7 +22,7 @@ public sealed class SlideChaos : Slide
 		{
 			RunInstant = true,
 			OrbitLength = int.MaxValue,
-			TimeStep = 0.001
+			DeltaTime = 0.001
 		};
 
 		#region Slide Content

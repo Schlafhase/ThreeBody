@@ -4,7 +4,9 @@ namespace ThreeBody.Physics;
 
 public static class Gravity
 {
-    public static void SimulateGravity(PhysicsBody[] bodies, double timeStep)
+    private const double gravitationalConstant = 0.1;
+    
+    public static void SimulateGravity(PhysicsBody[] bodies, double deltaTime)
     {
         for (int i = 0; i < bodies.Length; i++)
         {
@@ -17,9 +19,9 @@ public static class Gravity
 
                 Vec2 direction = bodies[j].Position - bodies[i].Position;
                 double distance = direction.Length;
-                double force = (0.1f * bodies[i].Mass * bodies[j].Mass) / (distance*distance);
+                double force = (gravitationalConstant * bodies[i].Mass * bodies[j].Mass) / (distance*distance);
                 
-                bodies[i].Velocity += direction * force * timeStep;
+                bodies[i].Velocity += direction * force * deltaTime;
             }
         }
     }

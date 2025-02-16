@@ -12,7 +12,7 @@ public static class ThreeBodySimulator
 {
 	public static void Simulate(PhysicsBody[] bodies,
 		double time,
-		double timeStep,
+		double deltaTime,
 		out int directionChanges,
 		(BezierCurve orbit1, BezierCurve orbit2, BezierCurve orbit3)? orbits = null,
 		int orbitOffsetX = 0,
@@ -24,9 +24,9 @@ public static class ThreeBodySimulator
 
 		directionChanges = 0;
 
-		if (timeStep <= 0)
+		if (deltaTime <= 0)
 		{
-			throw new ArgumentException("Time step must be greater than zero.", nameof(timeStep));
+			throw new ArgumentException("Time step must be greater than zero.", nameof(deltaTime));
 		}
 
 		if (bodies.Length != 3)
@@ -44,13 +44,13 @@ public static class ThreeBodySimulator
 
 		#endregion
 
-		int steps = (int)(time / timeStep);
+		int steps = (int)(time / deltaTime);
 
 		for (int i = 0; i < steps; i++)
 		{
 			Vec2 previousVelocity = bodies[0].Velocity;
 
-			Gravity.SimulateGravity(bodies, timeStep);
+			Gravity.SimulateGravity(bodies, deltaTime);
 
 			if (sign(previousVelocity.Y) != sign(bodies[0].Velocity.Y))
 			{
@@ -59,7 +59,7 @@ public static class ThreeBodySimulator
 
 			for (int j = 0; j < bodies.Length; j++)
 			{
-				bodies[j].Position += bodies[j].Velocity * timeStep;
+				bodies[j].Position += bodies[j].Velocity * deltaTime;
 			}
 
 			if (orbits is not { } orbitsNotNull || i % 10 == 0)
@@ -76,13 +76,13 @@ public static class ThreeBodySimulator
 		}
 	}
 
-	public static int SimulateUntil(PhysicsBody[] bodies, double timeStep, Func<PhysicsBody[], int, bool> predicate)
+	public static int SimulateUntil(PhysicsBody[] bodies, double deltaTime, Func<PhysicsBody[], int, bool> predicate)
 	{
 		#region Validation
 
-		if (timeStep <= 0)
+		if (deltaTime <= 0)
 		{
-			throw new ArgumentException("Time step must be greater than zero.", nameof(timeStep));
+			throw new ArgumentException("Time step must be greater than zero.", nameof(deltaTime));
 		}
 
 		if (bodies.Length != 3)
@@ -96,11 +96,11 @@ public static class ThreeBodySimulator
 
 		while (!predicate(bodies, iterations))
 		{
-			Gravity.SimulateGravity(bodies, timeStep);
+			Gravity.SimulateGravity(bodies, deltaTime);
 
 			for (int i = 0; i < bodies.Length; i++)
 			{
-				bodies[i].Position += bodies[i].Velocity * timeStep;
+				bodies[i].Position += bodies[i].Velocity * deltaTime;
 			}
 
 			iterations++;
@@ -147,7 +147,7 @@ public static class ThreeBodySimulator
 		int width,
 		int height,
 		double time,
-		double timeStep,
+		double deltaTime,
 		bool showDistance = false,
 		bool renderOrbits = false)
 	{
@@ -174,7 +174,7 @@ public static class ThreeBodySimulator
 			orbit2.Pen = Pens.Lime;
 			orbit3.Pen = Pens.Blue;
 
-			Simulate(startConfig, time, timeStep, out _, (orbit1, orbit2, orbit3), width / 2, height / 2);
+			Simulate(startConfig, time, deltaTime, out _, (orbit1, orbit2, orbit3), width / 2, height / 2);
 
 			orbit1.Put(g);
 			orbit2.Put(g);
@@ -182,7 +182,7 @@ public static class ThreeBodySimulator
 		}
 		else
 		{
-			Simulate(startConfig, time, timeStep, out _);
+			Simulate(startConfig, time, deltaTime, out _);
 		}
 
 		GlowDot body1End = new((int)startConfig[0].Position.X + width / 2, (int)startConfig[0].Position.Y + height / 2,

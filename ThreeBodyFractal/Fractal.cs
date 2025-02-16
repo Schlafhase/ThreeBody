@@ -20,17 +20,17 @@ public static class Fractal
         Color.DarkBlue, Color.Aqua
     ];
     
-    public static Bitmap GetFractal(FractalType type, PhysicsBody[] startConfig, int width, int height, double time, double timeStep, Vec2 center, double zoom, bool logProgress = false)
+    public static Bitmap GetFractal(FractalType type, PhysicsBody[] startConfig, int width, int height, double time, double deltaTime, Vec2 center, double zoom, bool logProgress = false)
     {
         return type switch
         {
-            FractalType.Distance => getFractal(startConfig, width, height, time, timeStep, center, zoom, getColourFromDistance, logProgress),
-            // FractalType.Angle => getFractal(startConfig, width, height, time, timeStep, center, zoom, getColourFromAngle),
+            FractalType.Distance => getFractal(startConfig, width, height, time, deltaTime, center, zoom, getColourFromDistance, logProgress),
+            // FractalType.Angle => getFractal(startConfig, width, height, time, deltaTime, center, zoom, getColourFromAngle),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }
     
-    public static Bitmap GetFractalIterations(PhysicsBody[] startConfig, int width, int height, int maxIterations, int radius, double timeStep, Vec2 center, double zoom, bool logProgress = false)
+    public static Bitmap GetFractalIterations(PhysicsBody[] startConfig, int width, int height, int maxIterations, int radius, double deltaTime, Vec2 center, double zoom, bool logProgress = false)
     {
         object bmpLocker = new();
         object consoleLocker = new();
@@ -50,7 +50,7 @@ public static class Fractal
 
                 config[0].Position += new Vec2(fractalX, fractalY);
 
-                int iterations = ThreeBodySimulator.SimulateUntil(config, timeStep,
+                int iterations = ThreeBodySimulator.SimulateUntil(config, deltaTime,
                                                  (bodies, i) =>
                                                      bodies.Any(body => body.Position.X * body.Position.X +
                                                                     body.Position.Y * body.Position.Y >
@@ -100,7 +100,7 @@ public static class Fractal
         return bmp;
     }
 
-    public static Bitmap GetFractalChaos(PhysicsBody[] startConfig, int width, int height, double time, double timeStep, Vec2 center, double zoom, bool logProgress = false)
+    public static Bitmap GetFractalChaos(PhysicsBody[] startConfig, int width, int height, double time, double deltaTime, Vec2 center, double zoom, bool logProgress = false)
     {
         object bmpLocker = new();
         object consoleLocker = new();
@@ -123,7 +123,7 @@ public static class Fractal
 
                 PhysicsBody[] start = config.ToArray();
 
-                ThreeBodySimulator.Simulate(config, time, timeStep, out int directionChanges);
+                ThreeBodySimulator.Simulate(config, time, deltaTime, out int directionChanges);
 
                 lock (bmpLocker)
                 {
@@ -201,7 +201,7 @@ public static class Fractal
         return Color.FromArgb(r, g, b);
     }
 
-    private static Bitmap getFractal(PhysicsBody[] startConfig, int width, int height, double time, double timeStep, Vec2 center, double zoom, Func<PhysicsBody[], PhysicsBody[], double, Color> calculateColor, bool logProgress = false)
+    private static Bitmap getFractal(PhysicsBody[] startConfig, int width, int height, double time, double deltaTime, Vec2 center, double zoom, Func<PhysicsBody[], PhysicsBody[], double, Color> calculateColor, bool logProgress = false)
     {
         object bmpLocker = new();
         object consoleLocker = new();
@@ -230,7 +230,7 @@ public static class Fractal
 
                 PhysicsBody[] start = config.ToArray();
 
-                ThreeBodySimulator.Simulate(config, time, timeStep, out _);
+                ThreeBodySimulator.Simulate(config, time, deltaTime, out _);
 
                 lock (bmpLocker)
                 {

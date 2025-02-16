@@ -12,7 +12,7 @@ public class ThreeBodyFractalVisualiser : PositionedRectangleSizedComponent
 {
 	public FractalType Type { get; set; } = FractalType.Distance;
 	public double SimulationTime { get; set; } = 20f;
-	public double TimeStep { get; set; } = 0.1f;
+	public double DeltaTime { get; set; } = 0.1f;
 	public Vec2 Center { get; set; } = new Vec2(0, 0);
 	public double Zoom { get; set; } = 1f;
 
@@ -63,7 +63,7 @@ public class ThreeBodyFractalVisualiser : PositionedRectangleSizedComponent
 		
 		Bitmap oldBitmap = _currentImage;
 		
-		_currentImage = Fractal.GetFractal(Type, StartConfig, Width, Height, SimulationTime, TimeStep, Center, Zoom);
+		_currentImage = Fractal.GetFractal(Type, StartConfig, Width, Height, SimulationTime, DeltaTime, Center, Zoom);
 		oldBitmap.Dispose();
 		Parent?.Update();
 	}

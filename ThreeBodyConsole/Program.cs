@@ -31,7 +31,7 @@ internal class Program
 		readInt("Höhe", out int height);
 
 		readDouble("Zoom", out double zoom);
-		readDouble("Zeitschrittweite", out double timeStep);
+		readDouble("Zeitschrittweite", out double deltaTime);
 		readDouble("Mitte x", out double centerX);
 		readDouble("Mitte y", out double centerY);
 
@@ -72,7 +72,7 @@ internal class Program
 			{
 				readDouble("Zeit", out double time);
 
-				using Bitmap bmp = Fractal.GetFractal(FractalType.Distance, bodies, width, height, time, timeStep,
+				using Bitmap bmp = Fractal.GetFractal(FractalType.Distance, bodies, width, height, time, deltaTime,
 													  new Vec2(centerX, centerY), zoom, true);
 				fileName = "fractal-distance.png";
 				bmp.Save(fileName);
@@ -82,7 +82,7 @@ internal class Program
 			{
 				readDouble("Zeit", out double time);
 
-				using Bitmap bmp = Fractal.GetFractalChaos(bodies, width, height, time, timeStep,
+				using Bitmap bmp = Fractal.GetFractalChaos(bodies, width, height, time, deltaTime,
 														   new Vec2(centerX, centerY), zoom, true);
 				fileName = "fractal-chaos.png";
 				bmp.Save(fileName);
@@ -93,7 +93,7 @@ internal class Program
 				readInt("Maximale Iterationen", out int maxIterations);
 				readInt("Radius", out int radius);
 
-				using Bitmap bmp = Fractal.GetFractalIterations(bodies, width, height, maxIterations, radius, timeStep,
+				using Bitmap bmp = Fractal.GetFractalIterations(bodies, width, height, maxIterations, radius, deltaTime,
 																new Vec2(centerX, centerY), zoom, true);
 				fileName = "fractal-radius.png";
 				bmp.Save(fileName);

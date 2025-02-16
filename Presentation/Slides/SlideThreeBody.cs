@@ -17,7 +17,7 @@ public sealed class SlideThreeBody : Slide
 		new() { Mass = 100, Position = new Vec2(100, 0) }
 	];
 
-	private readonly ThreeBodyVisualiser _visualiser = new(timeStep: 0.1)
+	private readonly ThreeBodyVisualiser _visualiser = new(deltaTime: 0.1)
 	{
 		OrbitLength = 50
 	};

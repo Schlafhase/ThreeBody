@@ -19,8 +19,8 @@ public partial class Simulation : ComponentBase
 	[SupplyParameterFromQuery(Name = "time")]
 	private double time { get; set; }
 
-	[SupplyParameterFromQuery(Name = "timeStep")]
-	private double timeStep { get; set; }
+	[SupplyParameterFromQuery(Name = "deltaTime")]
+	private double deltaTime { get; set; }
 
 	[SupplyParameterFromQuery(Name = "startConfig")]
 	private string startConfigBase64 { get; set; }
@@ -48,7 +48,7 @@ public partial class Simulation : ComponentBase
 
 			startConfig[0].Position += new Vec2(x, y);
 
-			_image = ThreeBodySimulator.GetSimulationImage(startConfig, 1000, 1000, time, timeStep, true, true);
+			_image = ThreeBodySimulator.GetSimulationImage(startConfig, 1000, 1000, time, deltaTime, true, true);
 			_loaded = true;
 			await InvokeAsync(StateHasChanged);
 		}

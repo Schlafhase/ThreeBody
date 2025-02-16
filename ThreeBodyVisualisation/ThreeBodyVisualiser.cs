@@ -66,7 +66,7 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 	/// <summary>
 	/// Shouldn't affect the speed of the simulation but rather the quality
 	/// </summary>
-	public double TimeStep { get; set; }
+	public double DeltaTime { get; set; }
 
 	/// <summary>
 	/// Affects the speed of the simulation as well as the quality
@@ -92,7 +92,7 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 		int y = 0,
 		int width = 800,
 		int height = 800,
-		double timeStep = 0.01f,
+		double deltaTime = 0.01f,
 		double stepsPerSecond = 10f)
 	{
 		_canvas = new Canvas.Canvas(0, 0, width, height);
@@ -102,7 +102,7 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 		Y = y;
 		Width = width;
 		Height = height;
-		TimeStep = timeStep;
+		DeltaTime = deltaTime;
 		StepsPerSecond = stepsPerSecond;
 
 		_bodies = ThreeBodySimulator.GenerateStableConfiguration(1);
@@ -158,7 +158,7 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 
 					for (int i = 0; i < _bodies.Length; i++)
 					{
-						_bodies[i].Position += _bodies[i].Velocity * TimeStep;
+						_bodies[i].Position += _bodies[i].Velocity * DeltaTime;
 
 						lock (_orbits[i].PointsLocker)
 						{
@@ -199,8 +199,8 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 					Parent?.Update();
 					// Debug.WriteLine($"Parent update called, parent exists: {Parent != null}");
 
-					Gravity.SimulateGravity(_bodies, TimeStep);
-					_timeSinceStart += TimeStep;
+					Gravity.SimulateGravity(_bodies, DeltaTime);
+					_timeSinceStart += DeltaTime;
 
 					if (RunTime >= 0 && _timeSinceStart >= RunTime)
 					{
@@ -215,7 +215,7 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 						continue;
 					}
 
-					NOP(TimeStep / StepsPerSecond);
+					NOP(DeltaTime / StepsPerSecond);
 				}
 			}
 

@@ -2,5 +2,5 @@
 
 public interface ISimulator
 {
-    void Simulate(PhysicsBody[] bodies, float time, float timeStep);
+    void Simulate(PhysicsBody[] bodies, float time, float deltaTime);
 }

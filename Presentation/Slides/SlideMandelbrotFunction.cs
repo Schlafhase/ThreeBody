@@ -14,7 +14,7 @@ public sealed class SlideMandelbrotFunction : Slide
 
 		Canvas = new Canvas.Canvas(0, 0,
 		[
-			new Equation(@"f:\mathbb C\to\mathbb Farben", 0) { Color = SKColors.White }
+			new Equation(@"f:\mathbb Koordinaten\to\mathbb Farben", 0) { Color = SKColors.White }
 				.GetRelativeSizedRelativePositioned(x: 0.3, y: 0.5, size: 0.4),
 		])
 		{

@@ -114,7 +114,7 @@ public partial class Sandbox : ComponentBase
 				
 				await _jsRuntime.InvokeVoidAsync(
 					"open",
-					$"simulation?x={fractalX}&y={fractalY}&time={_time}&timeStep={_timeStep}&lang={_languageState.Current.LanguageCode}&startConfig={configBase64}", "_blank");
+					$"simulation?x={fractalX}&y={fractalY}&time={_time}&deltaTime={_timeStep}&lang={_languageState.Current.LanguageCode}&startConfig={configBase64}", "_blank");
 			};
 
 			await render();
