@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Runtime.Versioning;
+using AnimatedGif;
 using Canvas.Components;
 using Canvas.Components.AnimationUtilities;
 using Canvas.Components.Interfaces.Mix;
@@ -62,13 +63,12 @@ public sealed class ThreeBodyRenderer : IDisposable
 	private PositionedComponent[] _bodyComponents;
 
 
-	private GifWriter _gifWriter;
 	private double _timeSinceLastFrame = double.MaxValue;
-	public double FPS { get; set; } = 10;
+	public double FPS { get; set; } = 30;
 	public int Repeat { get; set; } = 0;
 	private int _frameCounter;
 
-	private void update()
+	private void update(AnimatedGifCreator gif)
 	{
 		if (_timeSinceLastFrame < 1 / FPS)
 		{
@@ -78,9 +78,10 @@ public sealed class ThreeBodyRenderer : IDisposable
 
 		using Image frame = new Bitmap(Width, Height);
 		using Graphics g = Graphics.FromImage(frame);
+		
 		Put(g);
-		_gifWriter.WriteFrame(frame, (int)_timeSinceLastFrame);
-		frame.Save("frames/" + _frameCounter + ".png");
+		gif.AddFrame(frame, quality: GifQuality.Bit8);
+		// frame.Save("frames/" + _frameCounter + ".png");
 		_timeSinceLastFrame = 0;
 		_frameCounter++;
 	}
@@ -91,7 +92,10 @@ public sealed class ThreeBodyRenderer : IDisposable
 		double deltaTime = 0.01f,
 		double stepsPerSecond = 10f)
 	{
-		_canvas = new Canvas.Canvas(0, 0, width, height);
+		_canvas = new Canvas.Canvas(0, 0, width, height)
+		{
+			BackgroundColor = Color.Black
+		};
 
 		RunTime = runTime;
 		Width = width;
@@ -131,9 +135,9 @@ public sealed class ThreeBodyRenderer : IDisposable
 		ResizeComponents();
 
 		Running = true;
-
-		_gifWriter = new GifWriter("output.gif", (int)(1000 / FPS), Repeat);
 		_frameCounter = 0;
+
+		using AnimatedGifCreator? gif = AnimatedGif.AnimatedGif.Create("output.gif", 1, Repeat);
 
 		while (Running)
 		{
@@ -180,7 +184,7 @@ public sealed class ThreeBodyRenderer : IDisposable
 					break;
 				}
 
-				update();
+				update(gif);
 				// Debug.WriteLine($"Parent update called, parent exists: {Parent != null}");
 
 				Gravity.SimulateGravity(_bodies, DeltaTime);
@@ -198,7 +202,6 @@ public sealed class ThreeBodyRenderer : IDisposable
 		}
 
 		// Debug.WriteLine("Thread stopped");
-		_gifWriter.Dispose();
 	}
 
 	public void Stop()
