@@ -14,7 +14,7 @@ public sealed class SlideMandelbrotFunction : Slide
 
 		Canvas = new Canvas.Canvas(0, 0,
 		[
-			new Equation(@"z_{t+1} = z_t^2 + c", 0) { Color = SKColors.White }
+			new Equation(@"\vec{s_{rot_{t+ \Delta t}}} = \vec{s_{rot_t}} + \vec{v_{rot_{t+ \Delta t}}} \\ \vec{v_{rot_{t+ \Delta t}}} = \vec{v_{rot_t}} + \vec{a_{rot_{t + \Delta t}}}", 0) { Color = SKColors.White }
 				.GetRelativeSizedRelativePositioned(x: 0.3, y: 0.5, size: 0.4),
 		])
 		{

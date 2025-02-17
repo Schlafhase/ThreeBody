@@ -59,7 +59,7 @@ public sealed class SlideChaos : Slide
 			ReloadChaosVisualiser();
 		});
 		
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 2; i++)
 		{
 			Actions.Add(() =>
 			{
@@ -68,6 +68,20 @@ public sealed class SlideChaos : Slide
 				ReloadChaosVisualiser();
 			});
 		}
+		
+		Actions.Add(() =>
+		{
+			_startConfig[0].Position += new Vec2(2.5, 0);
+			ReloadStartConfigVisualiser();
+			ReloadChaosVisualiser();
+		});
+		
+		Actions.Add(() =>
+		{
+			_startConfig[0].Position += new Vec2(1, 0);
+			ReloadStartConfigVisualiser();
+			ReloadChaosVisualiser();
+		});
 	}
 
 	public override void OnLoad()

@@ -17,16 +17,11 @@ internal static class Program
 	{
 		// ThreeBodyRenderer renderer = new ThreeBodyRenderer();
 		//
-		// renderer.Reset(
-		// [
-		// 	new PhysicsBody { Mass = 100, Position = new Vec2(-100, 0) },
-		// 	new PhysicsBody { Mass = 100, Position = new Vec2(0, 0) },
-		// 	new PhysicsBody { Mass = 100, Position = new Vec2(100, 0) }
-		// ]);
+		// renderer.Reset(ThreeBodySimulator.GenerateStableConfiguration());
 		//
-		// renderer.RunTime = 20;
+		// renderer.RunTime = 200;
 		// renderer.Repeat = 1;
-		// renderer.FPS = 3;
+		// renderer.FPS = 2;
 		// renderer.Start();
 
 
@@ -51,7 +46,7 @@ internal static class Program
 		// 		Velocity = new Vec2(-8, -8),
 		// 	}
 		// 	]
-
+		
 		List<Slide> slides =
 		[
 			new SlideMandelbrotFunction(),
