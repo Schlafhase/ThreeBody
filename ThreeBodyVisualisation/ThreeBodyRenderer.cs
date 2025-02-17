@@ -13,47 +13,29 @@ using ThreeBody.Physics;
 namespace ThreeBodyVisualisation;
 
 [SupportedOSPlatform("windows")]
-public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDisposable
+public sealed class ThreeBodyRenderer : IDisposable
 {
 	private PhysicsBody[] _bodies;
 	private readonly Canvas.Canvas _canvas;
-	private Thread _thread;
 	private double _timeSinceStart;
 	public double RunTime;
 
 	private readonly object _tickLocker = new();
 
-	public override int X
-	{
-		get => _canvas.X;
-		set => _canvas.X = value;
-	}
 
-	public override int Y
-	{
-		get => _canvas.Y;
-		set => _canvas.Y = value;
-	}
-
-	public override int Width
+	public int Width
 	{
 		get => _canvas.Width;
 		set => _canvas.Width = value;
 	}
 
-	public override int Height
+	public int Height
 	{
 		get => _canvas.Height;
 		set => _canvas.Height = value;
 	}
 
-	public override Canvas.Canvas Parent
-	{
-		get => _canvas.Parent;
-		set => _canvas.Parent = value;
-	}
-
-	public override void Put(Graphics g)
+	public void Put(Graphics g)
 	{
 		// Debug.WriteLine($"Put called, canvas exists: {_canvas != null}, width: {_canvas.Width}, height: {_canvas.Height}");
 		_canvas.Put(g);
@@ -69,7 +51,6 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 	/// </summary>
 	public double StepsPerSecond { get; set; }
 
-	public bool RunInstant { get; set; }
 	public int OrbitLength { get; set; } = 500;
 
 	public double SimulationWidth = 800;
@@ -77,14 +58,34 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 
 	public bool Running { get; private set; }
 
-	private SynchronizationContext _syncContext;
-
 	private readonly BezierCurve[] _orbits;
 	private PositionedComponent[] _bodyComponents;
-	
-	public ThreeBodyVisualiser(double runTime = -1f,
-		int x = 0,
-		int y = 0,
+
+
+	private GifWriter _gifWriter;
+	private double _timeSinceLastFrame = double.MaxValue;
+	public double FPS { get; set; } = 10;
+	public int Repeat { get; set; } = 0;
+	private int _frameCounter;
+
+	private void update()
+	{
+		if (_timeSinceLastFrame < 1 / FPS)
+		{
+			return;
+		}
+
+
+		using Image frame = new Bitmap(Width, Height);
+		using Graphics g = Graphics.FromImage(frame);
+		Put(g);
+		_gifWriter.WriteFrame(frame, (int)_timeSinceLastFrame);
+		frame.Save("frames/" + _frameCounter + ".png");
+		_timeSinceLastFrame = 0;
+		_frameCounter++;
+	}
+
+	public ThreeBodyRenderer(double runTime = -1f,
 		int width = 800,
 		int height = 800,
 		double deltaTime = 0.01f,
@@ -93,8 +94,6 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 		_canvas = new Canvas.Canvas(0, 0, width, height);
 
 		RunTime = runTime;
-		X = x;
-		Y = y;
 		Width = width;
 		Height = height;
 		DeltaTime = deltaTime;
@@ -131,97 +130,75 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 
 		ResizeComponents();
 
-		_syncContext = SynchronizationContext.Current ??
-			throw new NullReferenceException($"{SynchronizationContext.Current} was null");
 		Running = true;
 
-		_thread = new Thread(() =>
+		_gifWriter = new GifWriter("output.gif", (int)(1000 / FPS), Repeat);
+		_frameCounter = 0;
+
+		while (Running)
 		{
-			// Debug.WriteLine("Thread started");
-
-			while (Running)
+			lock (_tickLocker)
 			{
-				lock (_tickLocker)
+				// Debug.WriteLine($"Body 0 position: {_bodies[0].Position}");
+
+				Array.ForEach(_orbits, orbit =>
 				{
-					// Debug.WriteLine($"Body 0 position: {_bodies[0].Position}");
+					orbit.X = _canvas.Width / 2;
+					orbit.Y = _canvas.Height / 2;
+				});
 
-					Array.ForEach(_orbits, orbit =>
+				for (int i = 0; i < _bodies.Length; i++)
+				{
+					_bodies[i].Position += _bodies[i].Velocity * DeltaTime;
+
+					lock (_orbits[i].PointsLocker)
 					{
-						orbit.X = _canvas.Width / 2;
-						orbit.Y = _canvas.Height / 2;
-					});
+						_orbits[i].Points
+								  .Add(new Point((int)(_bodies[i].Position.X), (int)(_bodies[i].Position.Y)));
 
+						if (_orbits[i].Points.Count > OrbitLength)
+						{
+							_orbits[i].Points.RemoveAt(0);
+						}
+					}
+				}
+
+				try
+				{
 					for (int i = 0; i < _bodies.Length; i++)
 					{
-						_bodies[i].Position += _bodies[i].Velocity * DeltaTime;
-
-						lock (_orbits[i].PointsLocker)
-						{
-							_orbits[i].Points
-									  .Add(new Point((int)(_bodies[i].Position.X), (int)(_bodies[i].Position.Y)));
-
-							if (_orbits[i].Points.Count > OrbitLength)
-							{
-								_orbits[i].Points.RemoveAt(0);
-							}
-						}
+						// ReSharper disable once PossibleLossOfFraction
+						_bodyComponents[i].X =
+							(int)(_bodies[i].Position.X * TransformationRatio + _canvas.Width / 2);
+						// ReSharper disable once PossibleLossOfFraction
+						_bodyComponents[i].Y =
+							(int)(_bodies[i].Position.Y * TransformationRatio + _canvas.Height / 2);
 					}
-
-					try
-					{
-						for (int i = 0; i < _bodies.Length; i++)
-						{
-							// ReSharper disable once InconsistentNaming
-							int _i = i; // Copy i because i might have changed by the time the lambda is executed
-
-							// ReSharper disable once PossibleLossOfFraction
-							_syncContext.Post(
-								_ => _bodyComponents[_i].X =
-									(int)(_bodies[_i].Position.X * TransformationRatio + _canvas.Width / 2),
-								null);
-							// ReSharper disable once PossibleLossOfFraction
-							_syncContext.Post(
-								_ => _bodyComponents[_i].Y =
-									(int)(_bodies[_i].Position.Y * TransformationRatio + _canvas.Height / 2),
-								null);
-						}
-					}
-					catch (ObjectDisposedException)
-					{
-						break;
-					}
-
-					Parent?.Update();
-					// Debug.WriteLine($"Parent update called, parent exists: {Parent != null}");
-
-					Gravity.SimulateGravity(_bodies, DeltaTime);
-					_timeSinceStart += DeltaTime;
-
-					if (RunTime >= 0 && _timeSinceStart >= RunTime)
-					{
-						Running = false;
-						break;
-					}
-
-					// Debug.WriteLine($"Update complete, time: {_timeSinceStart}");
-
-					if (RunInstant)
-					{
-						continue;
-					}
-
-					NOP(DeltaTime / StepsPerSecond);
 				}
+				catch (ObjectDisposedException)
+				{
+					break;
+				}
+
+				update();
+				// Debug.WriteLine($"Parent update called, parent exists: {Parent != null}");
+
+				Gravity.SimulateGravity(_bodies, DeltaTime);
+				_timeSinceStart += DeltaTime;
+				_timeSinceLastFrame += DeltaTime;
+
+				if (RunTime >= 0 && _timeSinceStart >= RunTime)
+				{
+					Running = false;
+					break;
+				}
+
+				// Debug.WriteLine($"Update complete, time: {_timeSinceStart}");
 			}
+		}
 
-			// Debug.WriteLine("Thread stopped");
-			_syncContext.Send(_ => Parent?.ForceUpdate(), null);
-		})
-		{
-			IsBackground = true
-		};
-
-		_thread.Start();
+		// Debug.WriteLine("Thread stopped");
+		_gifWriter.Dispose();
 	}
 
 	public void Stop()
@@ -259,8 +236,6 @@ public sealed class ThreeBodyVisualiser : PositionedRectangleSizedComponent, IDi
 				bodyComponent.SetRadius((int)(10 * TransformationRatio), (int)(80 * TransformationRatio));
 				bodyComponent.SuppressUpdate = false;
 			}
-
-			Parent?.Update();
 		}
 	}
 
