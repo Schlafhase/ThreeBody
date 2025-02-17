@@ -127,10 +127,10 @@ public static class Fractal
 
                 lock (bmpLocker)
                 {
-                    Color colour = lerpColours(palette, directionChanges / (time));
-                    bmp.SetPixel(x, y, colour);
-                    // double brightness = Math.Clamp(directionChanges / (time / 600), 0, 255);
-                    // bmp.SetPixel(x, y, Color.FromArgb((int)brightness, (int)brightness, (int)brightness));
+                    // Color colour = lerpColours(palette, directionChanges / time);
+                    // bmp.SetPixel(x, y, colour);
+                    double brightness = Math.Clamp(directionChanges / (time / 600), 0, 255);
+                    bmp.SetPixel(x, y, Color.FromArgb((int)brightness, (int)brightness, (int)brightness));
                 }
             });
             

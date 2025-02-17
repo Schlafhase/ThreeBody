@@ -15,6 +15,11 @@ internal static class Program
 	[STAThread]
 	private static void Main()
 	{
+		// PhysicsBody[] startConfig = ThreeBodySimulator.GenerateStableConfiguration(1);
+		// using Bitmap bmp =
+		// 	ThreeBodySimulator.GetSimulationImage(startConfig, 1920, 1080, 20, 0.01, renderOrbits: true);
+		// bmp.Save("out.png");
+
 		// ThreeBodyRenderer renderer = new ThreeBodyRenderer();
 		//
 		// renderer.Reset(ThreeBodySimulator.GenerateStableConfiguration());
@@ -46,7 +51,7 @@ internal static class Program
 		// 		Velocity = new Vec2(-8, -8),
 		// 	}
 		// 	]
-		
+
 		List<Slide> slides =
 		[
 			new SlideMandelbrotFunction(),

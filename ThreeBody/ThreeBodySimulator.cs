@@ -44,6 +44,11 @@ public static class ThreeBodySimulator
 
 		#endregion
 
+		for (int i = 0; i < time / deltaTime; i++)
+		{
+			Gravity.SimulateGravity(bodies, deltaTime);
+		}
+		
 		int steps = (int)(time / deltaTime);
 
 		for (int i = 0; i < steps; i++)
